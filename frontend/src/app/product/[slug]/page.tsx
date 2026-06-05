@@ -1,8 +1,8 @@
 'use client'
 import { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
-import Image from 'next/image'
 import { productApi, reviewApi } from '@/lib/api'
+import ProductImageGallery from '@/components/products/ProductImageGallery'
 import { useCartStore } from '@/store/cartStore'
 import { useAuthStore } from '@/store/authStore'
 import { useUIStore } from '@/store/uiStore'
@@ -19,7 +19,6 @@ export default function ProductDetailPage() {
   const [selectedSize, setSelectedSize] = useState('')
   const [selectedColor, setSelectedColor] = useState('')
   const [quantity, setQuantity] = useState(1)
-  const [mainImage, setMainImage] = useState(0)
   const [activeTab, setActiveTab] = useState<'description' | 'reviews'>('description')
   const [reviewForm, setReviewForm] = useState({ rating: 5, title: '', comment: '' })
 
@@ -113,35 +112,14 @@ export default function ProductDetailPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
         {/* Images */}
-        <div className="space-y-4">
-          <div className="relative aspect-square rounded-2xl overflow-hidden bg-gray-50 dark:bg-gray-900">
-            <Image
-              src={product.images[mainImage]?.url || 'https://via.placeholder.com/600'}
-              alt={product.images[mainImage]?.alt || product.name}
-              fill className="object-cover"
-            />
-            {product.isLimited && (
-              <div className="absolute top-4 left-4">
-                <span className="badge bg-red-500 text-white text-sm px-3 py-1">🔥 Limited Edition</span>
-              </div>
-            )}
-            {discount && (
-              <div className="absolute top-4 right-4">
-                <span className="badge bg-primary-500 text-white text-sm px-3 py-1">-{discount}%</span>
-              </div>
-            )}
-          </div>
-          {product.images.length > 1 && (
-            <div className="flex gap-3">
-              {product.images.map((img, i) => (
-                <button key={i} onClick={() => setMainImage(i)}
-                  className={`relative w-20 h-20 rounded-xl overflow-hidden border-2 transition-colors ${mainImage === i ? 'border-primary-500' : 'border-gray-200 dark:border-gray-700 hover:border-gray-300'}`}>
-                  <Image src={img.url} alt={img.alt} fill className="object-cover" />
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
+        <ProductImageGallery
+          images={product.images}
+          category={product.category}
+          team={product.team}
+          productName={product.name}
+          isLimited={product.isLimited}
+          discountPercent={discount}
+        />
 
         {/* Details */}
         <div className="space-y-6">

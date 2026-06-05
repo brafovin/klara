@@ -8,6 +8,7 @@ import { authApi } from '@/lib/api'
 import toast from 'react-hot-toast'
 import type { Product } from '@/types'
 import StarRating from '@/components/ui/StarRating'
+import ProductIllustration from './ProductIllustration'
 
 interface Props {
   product: Product
@@ -23,13 +24,12 @@ export default function ProductCard({ product, lang = 'de' }: Props) {
   const name = (lang !== 'de' && product.nameTranslations?.[lang]) || product.name
   const price = product.discountPrice || product.price
 
+  const useIllustration = imgError || !product.images?.[0]?.url || product.images[0].url.includes('placeholder')
+
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault()
     const defaultVariant = product.variants.find(v => v.stock > 0)
-    if (!defaultVariant) {
-      toast.error('Nicht auf Lager')
-      return
-    }
+    if (!defaultVariant) { toast.error('Nicht auf Lager'); return }
     addItem({
       productId: product._id,
       name: product.name,
@@ -50,9 +50,7 @@ export default function ProductCard({ product, lang = 'de' }: Props) {
       await authApi.toggleWishlist(product._id)
       setIsWishlisted(!isWishlisted)
       toast.success(isWishlisted ? 'Von Wunschliste entfernt' : 'Zur Wunschliste hinzugefügt')
-    } catch {
-      toast.error('Fehler')
-    }
+    } catch { toast.error('Fehler') }
   }
 
   const discount = product.discountPrice
@@ -61,27 +59,35 @@ export default function ProductCard({ product, lang = 'de' }: Props) {
 
   return (
     <Link href={`/product/${product.slug}`} className="card group overflow-hidden flex flex-col">
-      {/* Image */}
+      {/* Image / Illustration */}
       <div className="relative aspect-square overflow-hidden bg-gray-50 dark:bg-gray-900">
-        <Image
-          src={imgError ? `https://via.placeholder.com/400x400/16a34a/ffffff?text=${encodeURIComponent(product.name.slice(0,2))}` : (product.images[0]?.url || 'https://via.placeholder.com/400')}
-          alt={product.images[0]?.alt || product.name}
-          fill
-          className="object-cover group-hover:scale-105 transition-transform duration-500"
-          onError={() => setImgError(true)}
-        />
+        {useIllustration ? (
+          <div className="w-full h-full">
+            <ProductIllustration
+              category={product.category}
+              team={product.team}
+              size={280}
+              className="w-full h-full"
+            />
+          </div>
+        ) : (
+          <Image
+            src={product.images[0].url}
+            alt={product.images[0]?.alt || product.name}
+            fill
+            className="object-cover group-hover:scale-105 transition-transform duration-500"
+            onError={() => setImgError(true)}
+          />
+        )}
+
+        {/* Hover overlay */}
+        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300" />
 
         {/* Badges */}
         <div className="absolute top-3 left-3 flex flex-col gap-1.5">
-          {product.isLimited && (
-            <span className="badge bg-red-500 text-white">🔥 Limited</span>
-          )}
-          {discount && (
-            <span className="badge bg-primary-500 text-white">-{discount}%</span>
-          )}
-          {product.totalStock === 0 && (
-            <span className="badge bg-gray-500 text-white">Ausverkauft</span>
-          )}
+          {product.isLimited && <span className="badge bg-red-500 text-white text-xs px-2 py-0.5">🔥 Limited</span>}
+          {discount && <span className="badge bg-primary-500 text-white text-xs px-2 py-0.5">-{discount}%</span>}
+          {product.totalStock === 0 && <span className="badge bg-gray-500 text-white text-xs px-2 py-0.5">Ausverkauft</span>}
         </div>
 
         {/* Wishlist */}
@@ -102,17 +108,12 @@ export default function ProductCard({ product, lang = 'de' }: Props) {
         <h3 className="font-semibold text-gray-900 dark:text-white text-sm leading-snug line-clamp-2 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
           {name}
         </h3>
-
         <StarRating rating={product.rating} size="sm" />
-
         <div className="mt-auto flex items-center justify-between">
           <div className="flex items-baseline gap-2">
             <span className="text-lg font-bold text-gray-900 dark:text-white">€{price.toFixed(2)}</span>
-            {discount && (
-              <span className="text-sm text-gray-400 line-through">€{product.price.toFixed(2)}</span>
-            )}
+            {discount && <span className="text-sm text-gray-400 line-through">€{product.price.toFixed(2)}</span>}
           </div>
-
           <button onClick={handleAddToCart} disabled={product.totalStock === 0}
             className="w-9 h-9 bg-primary-600 hover:bg-primary-700 disabled:opacity-40 text-white rounded-xl flex items-center justify-center shadow-md hover:shadow-lg transition-all active:scale-95">
             🛒
