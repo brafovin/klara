@@ -28,8 +28,16 @@ const TEAMS = [
   { value: 'spanien', label: '🇪🇸 Spanien' },
   { value: 'england', label: '🏴󠁧󠁢󠁥󠁮󠁧󠁿 England' },
   { value: 'portugal', label: '🇵🇹 Portugal' },
+  { value: 'niederlande', label: '🇳🇱 Niederlande' },
+  { value: 'italien', label: '🇮🇹 Italien' },
+  { value: 'kroatien', label: '🇭🇷 Kroatien' },
   { value: 'usa', label: '🇺🇸 USA' },
   { value: 'mexiko', label: '🇲🇽 Mexiko' },
+  { value: 'marokko', label: '🇲🇦 Marokko' },
+  { value: 'japan', label: '🇯🇵 Japan' },
+  { value: 'senegal', label: '🇸🇳 Senegal' },
+  { value: 'suedkorea', label: '🇰🇷 Südkorea' },
+  { value: 'australien', label: '🇦🇺 Australien' },
 ]
 
 const SORTS = [
