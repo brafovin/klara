@@ -39,108 +39,117 @@ export default function JerseyIllustration({
     return (r * 299 + g * 587 + b * 114) / 1000
   }
   const lightPrimary = lum(primaryColor) > 180
-  const strokeBorder = lightPrimary ? '#b0c4d8' : 'none'
+  const strokeBorder = lightPrimary ? '#aac0d4' : 'none'
   const numColor = secondaryColor === primaryColor
     ? (lightPrimary ? '#333333' : '#ffffff')
     : secondaryColor
+  const lightNum = lum(numColor) > 180
 
-  // Main body path (viewBox 0 0 400 460)
+  // ── Silhouette ──────────────────────────────────────────────────────────
+  // Ghost-mannequin: shoulders pushed up, body with slight taper, longer torso
   const bodyPath =
-    'M 132 70 C 100 56 56 60 34 94 L 8 192 C 6 204 12 215 23 219 L 78 236 78 438 322 438 322 236 L 377 219 C 388 215 394 204 392 192 L 366 94 C 344 60 300 56 268 70 C 250 104 228 116 200 118 C 172 116 150 104 132 70 Z'
+    'M 138 68 C 106 54 58 58 36 93 L 8 196 C 5 209 13 221 26 224 L 82 242 82 448 318 448 318 242 L 374 224 C 387 221 395 209 392 196 L 364 93 C 342 58 294 54 262 68 C 244 102 224 116 200 118 C 176 116 156 102 138 68 Z'
 
-  // Left sleeve zone (for separate shading)
+  // Sleeve zones for separate lighting
   const leftSleevePath =
-    'M 132 70 C 100 56 56 60 34 94 L 8 192 C 6 204 12 215 23 219 L 78 236 78 160 C 78 140 90 120 110 100 Z'
-
-  // Right sleeve zone
+    'M 138 68 C 106 54 58 58 36 93 L 8 196 C 5 209 13 221 26 224 L 82 242 82 170 C 82 145 95 118 118 98 Z'
   const rightSleevePath =
-    'M 268 70 C 300 56 344 60 366 94 L 392 192 C 394 204 388 215 377 219 L 322 236 322 160 C 322 140 310 120 290 100 Z'
+    'M 262 68 C 294 54 342 58 364 93 L 392 196 C 395 209 387 221 374 224 L 318 242 318 170 C 318 145 305 118 282 98 Z'
 
-  // V-collar outer
-  const collarOuter =
-    'M 158 80 C 165 92 178 108 200 118 C 222 108 235 92 242 80 C 233 74 216 70 200 70 C 184 70 167 74 158 80 Z'
+  // Side seam lines for realism
+  const leftSeam = 'M 82 242 C 80 310 78 370 80 448'
+  const rightSeam = 'M 318 242 C 320 310 322 370 320 448'
 
-  // V-collar inner (cuts out, slightly smaller)
-  const collarInner =
-    'M 163 84 C 170 95 181 109 200 118 C 219 109 230 95 237 84 C 229 79 215 75 200 75 C 185 75 171 79 163 84 Z'
+  // Collar – realistic round/V collar
+  const collarOuter = 'M 156 78 C 162 92 176 110 200 118 C 224 110 238 92 244 78 C 234 71 218 67 200 67 C 182 67 166 71 156 78 Z'
+  const collarInner = 'M 161 82 C 167 94 179 110 200 118 C 221 110 233 94 239 82 C 230 76 216 72 200 72 C 184 72 170 76 161 82 Z'
 
-  // Yoke zone path: full sleeves + upper chest V down to y=250
+  // Hem ribbing band at bottom
+  const hemPath = 'M 82 428 L 82 448 L 318 448 L 318 428 Z'
+  const leftCuffPath = 'M 8 196 L 26 224 L 82 242 L 82 222 L 30 208 Z'
+  const rightCuffPath = 'M 392 196 L 374 224 L 318 242 L 318 222 L 370 208 Z'
+
+  // Yoke / pattern zone
   const yokePath =
-    'M 132 70 C 100 56 56 60 34 94 L 8 192 C 6 204 12 215 23 219 L 78 236 78 195 L 200 250 322 195 322 236 L 377 219 C 388 215 394 204 392 192 L 366 94 C 344 60 300 56 268 70 C 250 104 228 116 200 118 C 172 116 150 104 132 70 Z'
+    'M 138 68 C 106 54 58 58 36 93 L 8 196 C 5 209 13 221 26 224 L 82 242 82 195 L 200 258 318 195 318 242 L 374 224 C 387 221 395 209 392 196 L 364 93 C 342 58 294 54 262 68 C 244 102 224 116 200 118 C 176 116 156 102 138 68 Z'
 
-  // Left cuff band (bottom of left sleeve)
-  const leftCuffPath = 'M 8 182 L 23 219 L 78 236 L 78 218 L 28 203 Z'
-  // Right cuff band
-  const rightCuffPath = 'M 392 182 L 377 219 L 322 236 L 322 218 L 372 203 Z'
+  // Shoulder seam lines
+  const leftShoulder = 'M 36 93 C 64 68 102 58 138 68'
+  const rightShoulder = 'M 262 68 C 298 58 336 68 364 93'
 
-  // Shoulder highlight arc (top of shoulder, thin bright line)
-  const leftShoulderHighlight = 'M 34 94 C 60 68 96 58 132 70'
-  const rightShoulderHighlight = 'M 268 70 C 304 58 340 68 366 94'
+  // Armhole crease (where sleeve meets body)
+  const leftArmholeLine = 'M 82 168 C 84 190 82 215 82 242'
+  const rightArmholeLine = 'M 318 168 C 316 190 318 215 318 242'
 
-  // Armhole shadow triangle
-  const leftArmholeShadow = 'M 78 180 L 78 236 L 110 200 Z'
-  const rightArmholeShadow = 'M 322 180 L 322 236 L 290 200 Z'
-
-  // Badge shield path centered around (142, 180), ~26×30px
-  const badgePath =
-    'M 142 165 L 155 165 L 155 188 C 155 196 148 201 142 203 C 136 201 129 196 129 188 Z'
+  // Badge position
+  const badgePath = 'M 134 170 L 148 170 L 148 194 C 148 202 141 207 134 209 C 127 207 120 202 120 194 Z'
 
   return (
     <svg
-      viewBox="0 0 400 460"
+      viewBox="0 0 400 470"
       width={size}
-      height={size * (460 / 400)}
+      height={size * (470 / 400)}
       xmlns="http://www.w3.org/2000/svg"
       style={{ display: 'block' }}
     >
       <defs>
-        {/* === GRADIENTS === */}
+        {/* ── Drop shadow for product-photo look ── */}
+        <filter id={`${id}-drop`} x="-10%" y="-5%" width="120%" height="120%">
+          <feDropShadow dx="0" dy="14" stdDeviation="16" floodColor="#000000" floodOpacity="0.22" />
+        </filter>
 
-        {/* 1. Main body gradient: top-left light to bottom-right shadow */}
-        <linearGradient id={`${id}-bodyGrad`} x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="rgba(255,255,255,0.28)" />
-          <stop offset="45%" stopColor="rgba(255,255,255,0)" />
-          <stop offset="100%" stopColor="rgba(0,0,0,0.22)" />
+        {/* ── Fabric knit texture ── */}
+        <filter id={`${id}-fabric`} x="0%" y="0%" width="100%" height="100%" colorInterpolationFilters="sRGB">
+          <feTurbulence type="fractalNoise" baseFrequency="0.65 0.12" numOctaves="4" seed="7" result="noise" />
+          <feColorMatrix type="saturate" values="0" in="noise" result="grey" />
+          <feBlend in="SourceGraphic" in2="grey" mode="multiply" result="blended" />
+          <feComposite in="blended" in2="SourceGraphic" operator="in" />
+        </filter>
+
+        {/* ── Lighting gradients ── */}
+        <linearGradient id={`${id}-mainLight`} x1="10%" y1="5%" x2="90%" y2="95%">
+          <stop offset="0%"   stopColor="rgba(255,255,255,0.32)" />
+          <stop offset="40%"  stopColor="rgba(255,255,255,0.06)" />
+          <stop offset="100%" stopColor="rgba(0,0,0,0.26)" />
         </linearGradient>
 
-        {/* 2. Center chest radial highlight */}
-        <radialGradient id={`${id}-chestHighlight`} cx="42%" cy="38%" r="38%" fx="42%" fy="38%">
-          <stop offset="0%" stopColor="rgba(255,255,255,0.30)" />
-          <stop offset="60%" stopColor="rgba(255,255,255,0.05)" />
+        <radialGradient id={`${id}-specular`} cx="34%" cy="30%" r="28%" fx="34%" fy="30%">
+          <stop offset="0%"   stopColor="rgba(255,255,255,0.55)" />
+          <stop offset="50%"  stopColor="rgba(255,255,255,0.12)" />
           <stop offset="100%" stopColor="rgba(255,255,255,0)" />
         </radialGradient>
 
-        {/* 3. Left side shadow */}
-        <linearGradient id={`${id}-leftShadow`} x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="rgba(0,0,0,0.20)" />
-          <stop offset="35%" stopColor="rgba(0,0,0,0)" />
+        <linearGradient id={`${id}-leftEdge`} x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%"  stopColor="rgba(0,0,0,0.22)" />
+          <stop offset="30%" stopColor="rgba(0,0,0,0)" />
         </linearGradient>
 
-        {/* 4. Right side shadow */}
-        <linearGradient id={`${id}-rightShadow`} x1="100%" y1="0%" x2="0%" y2="0%">
-          <stop offset="0%" stopColor="rgba(0,0,0,0.24)" />
-          <stop offset="35%" stopColor="rgba(0,0,0,0)" />
+        <linearGradient id={`${id}-rightEdge`} x1="100%" y1="0%" x2="0%" y2="0%">
+          <stop offset="0%"  stopColor="rgba(0,0,0,0.28)" />
+          <stop offset="30%" stopColor="rgba(0,0,0,0)" />
         </linearGradient>
 
-        {/* 5. Bottom vignette */}
-        <linearGradient id={`${id}-bottomVignette`} x1="0%" y1="0%" x2="0%" y2="100%">
-          <stop offset="60%" stopColor="rgba(0,0,0,0)" />
-          <stop offset="100%" stopColor="rgba(0,0,0,0.18)" />
+        <linearGradient id={`${id}-bottomFade`} x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="55%"  stopColor="rgba(0,0,0,0)" />
+          <stop offset="100%" stopColor="rgba(0,0,0,0.20)" />
         </linearGradient>
 
-        {/* 6. Left sleeve gradient: lighter near shoulder, darker at cuff */}
-        <linearGradient id={`${id}-leftSleeveGrad`} x1="100%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" stopColor="rgba(255,255,255,0.15)" />
-          <stop offset="100%" stopColor="rgba(0,0,0,0.18)" />
+        <linearGradient id={`${id}-leftSlv`} x1="100%" y1="0%" x2="0%" y2="80%">
+          <stop offset="0%"   stopColor="rgba(255,255,255,0.14)" />
+          <stop offset="100%" stopColor="rgba(0,0,0,0.22)" />
         </linearGradient>
 
-        {/* 7. Right sleeve gradient: slightly darker overall (shadow side) */}
-        <linearGradient id={`${id}-rightSleeveGrad`} x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="rgba(0,0,0,0.10)" />
-          <stop offset="100%" stopColor="rgba(0,0,0,0.30)" />
+        <linearGradient id={`${id}-rightSlv`} x1="0%" y1="0%" x2="100%" y2="80%">
+          <stop offset="0%"   stopColor="rgba(0,0,0,0.08)" />
+          <stop offset="100%" stopColor="rgba(0,0,0,0.32)" />
         </linearGradient>
 
-        {/* Clip paths */}
+        <radialGradient id={`${id}-centerFade`} cx="50%" cy="55%" r="35%">
+          <stop offset="0%"   stopColor="rgba(255,255,255,0.08)" />
+          <stop offset="100%" stopColor="rgba(0,0,0,0.05)" />
+        </radialGradient>
+
+        {/* ── Clip paths ── */}
         <clipPath id={`${id}-bodyClip`}>
           <path d={bodyPath} />
         </clipPath>
@@ -148,242 +157,209 @@ export default function JerseyIllustration({
           <path d={yokePath} />
         </clipPath>
 
-        {/* Stripe pattern for 'stripes' */}
-        <pattern id={`${id}-stripePat`} x="0" y="0" width="56" height="460" patternUnits="userSpaceOnUse">
-          <rect x="0" y="0" width="28" height="460" fill={sc} />
-          <rect x="28" y="0" width="28" height="460" fill="transparent" />
+        {/* ── Stripe pattern ── */}
+        <pattern id={`${id}-stripePat`} x="0" y="0" width="52" height="470" patternUnits="userSpaceOnUse">
+          <rect x="0"  y="0" width="26" height="470" fill={sc} />
         </pattern>
 
-        {/* Hoops pattern */}
-        <pattern id={`${id}-hoopsPat`} x="0" y="0" width="400" height="44" patternUnits="userSpaceOnUse">
-          <rect x="0" y="0" width="400" height="22" fill={sc} />
-          <rect x="0" y="22" width="400" height="22" fill="transparent" />
+        {/* ── Hoops pattern ── */}
+        <pattern id={`${id}-hoopsPat`} x="0" y="0" width="400" height="42" patternUnits="userSpaceOnUse">
+          <rect x="0" y="0" width="400" height="21" fill={sc} />
         </pattern>
 
-        {/* Yoke diamond pattern */}
-        <pattern id={`${id}-yokeDiamond`} x="0" y="0" width="22" height="14" patternUnits="userSpaceOnUse">
-          <polygon points="11,0 22,7 11,14 0,7" fill={ac} />
-          <polygon points="0,0 11,7 0,14" fill={primaryColor} />
-          <polygon points="22,0 22,14 11,7" fill={primaryColor} />
+        {/* ── Yoke diamond ── */}
+        <pattern id={`${id}-yokeDia`} x="0" y="0" width="24" height="15" patternUnits="userSpaceOnUse">
+          <polygon points="12,0 24,7.5 12,15 0,7.5" fill={ac} />
+          <polygon points="0,0 12,7.5 0,15" fill={primaryColor} />
+          <polygon points="24,0 24,15 12,7.5" fill={primaryColor} />
         </pattern>
       </defs>
 
-      {/* ===== BASE JERSEY FILL ===== */}
-      <path d={bodyPath} fill={primaryColor} stroke={strokeBorder} strokeWidth={strokeBorder !== 'none' ? 1 : 0} />
+      {/* ══ MAIN JERSEY GROUP with drop shadow ══ */}
+      <g filter={`url(#${id}-drop)`}>
 
-      {/* ===== PATTERN LAYER ===== */}
-      {pattern === 'stripes' && (
-        <path d={bodyPath} fill={`url(#${id}-stripePat)`} clipPath={`url(#${id}-bodyClip)`} />
-      )}
-      {pattern === 'hoops' && (
-        <path d={bodyPath} fill={`url(#${id}-hoopsPat)`} clipPath={`url(#${id}-bodyClip)`} />
-      )}
-      {pattern === 'diagonal' && (
+        {/* Base fill */}
+        <path
+          d={bodyPath}
+          fill={primaryColor}
+          stroke={strokeBorder}
+          strokeWidth={strokeBorder !== 'none' ? 1.2 : 0}
+        />
+
+        {/* ── Pattern layer ── */}
+        {pattern === 'stripes' && (
+          <path d={bodyPath} fill={`url(#${id}-stripePat)`} clipPath={`url(#${id}-bodyClip)`} />
+        )}
+        {pattern === 'hoops' && (
+          <path d={bodyPath} fill={`url(#${id}-hoopsPat)`} clipPath={`url(#${id}-bodyClip)`} />
+        )}
+        {pattern === 'diagonal' && (
+          <g clipPath={`url(#${id}-bodyClip)`}>
+            {[-60,-20,20,60,100,140,180,220,260,300,340,380,420].map((x, i) => (
+              <line key={i} x1={x} y1={0} x2={x+470} y2={470} stroke={sc} strokeWidth={22} strokeOpacity={0.88} />
+            ))}
+          </g>
+        )}
+        {pattern === 'yoke' && (
+          <>
+            <path d={yokePath} fill={sc} clipPath={`url(#${id}-bodyClip)`} />
+            <path d={yokePath} fill={`url(#${id}-yokeDia)`} clipPath={`url(#${id}-bodyClip)`} opacity={0.72} />
+            <polyline points="82,195 200,258 318,195" fill="none"
+              stroke="rgba(255,255,255,0.50)" strokeWidth={1.8} clipPath={`url(#${id}-bodyClip)`} />
+          </>
+        )}
+        {pattern === 'chevron' && (
+          <g clipPath={`url(#${id}-bodyClip)`}>
+            {[185,235,285,335].map((y, i) => (
+              <polyline key={i} points={`82,${y} 200,${y-42} 318,${y}`}
+                fill="none" stroke={sc} strokeWidth={24} strokeOpacity={0.88} />
+            ))}
+          </g>
+        )}
+
+        {/* ── Hem and cuff bands ── */}
+        <path d={hemPath}      fill={cc} clipPath={`url(#${id}-bodyClip)`} />
+        <path d={leftCuffPath} fill={cc} clipPath={`url(#${id}-bodyClip)`} />
+        <path d={rightCuffPath} fill={cc} clipPath={`url(#${id}-bodyClip)`} />
+
+        {/* Hem ribbing lines */}
         <g clipPath={`url(#${id}-bodyClip)`}>
-          {[-80, -40, 0, 40, 80, 120, 160, 200, 240, 280, 320, 360, 400, 440].map((x, i) => (
-            <line
-              key={i}
-              x1={x}
-              y1={0}
-              x2={x + 460}
-              y2={460}
-              stroke={sc}
-              strokeWidth={24}
-              strokeOpacity={0.85}
-            />
+          {[432,436,440,444].map(y => (
+            <line key={y} x1={82} y1={y} x2={318} y2={y}
+              stroke="rgba(0,0,0,0.12)" strokeWidth={0.8} />
+          ))}
+          {/* Cuff ribbing lines - left */}
+          {[0,4,8,12,16].map((d, i) => (
+            <line key={`cl${i}`}
+              x1={8+d*1.2} y1={196+d*1.5} x2={26+d*1.4} y2={224+d*0.8}
+              stroke="rgba(0,0,0,0.10)" strokeWidth={0.7} />
+          ))}
+          {/* Cuff ribbing lines - right */}
+          {[0,4,8,12,16].map((d, i) => (
+            <line key={`cr${i}`}
+              x1={392-d*1.2} y1={196+d*1.5} x2={374-d*1.4} y2={224+d*0.8}
+              stroke="rgba(0,0,0,0.10)" strokeWidth={0.7} />
           ))}
         </g>
-      )}
-      {pattern === 'yoke' && (
-        <>
-          {/* Yoke base color */}
-          <path d={yokePath} fill={sc} clipPath={`url(#${id}-bodyClip)`} />
-          {/* Yoke diamond overlay */}
-          <path d={yokePath} fill={`url(#${id}-yokeDiamond)`} clipPath={`url(#${id}-bodyClip)`} opacity={0.7} />
-          {/* Bottom V-edge highlight of yoke */}
-          <polyline
-            points="78,195 200,250 322,195"
-            fill="none"
-            stroke="rgba(255,255,255,0.55)"
-            strokeWidth={2}
-            clipPath={`url(#${id}-bodyClip)`}
-          />
-        </>
-      )}
-      {pattern === 'chevron' && (
-        <g clipPath={`url(#${id}-bodyClip)`}>
-          {[180, 230, 280, 330].map((y, i) => (
-            <polyline
-              key={i}
-              points={`78,${y} 200,${y - 40} 322,${y}`}
-              fill="none"
-              stroke={sc}
-              strokeWidth={26}
-              strokeOpacity={0.9}
-            />
-          ))}
+
+        {/* ── Fabric texture overlay ── */}
+        <path d={bodyPath} fill={primaryColor} filter={`url(#${id}-fabric)`} opacity={0.055} />
+
+        {/* ── Wrinkle lines (organic Bezier curves) ── */}
+        <g clipPath={`url(#${id}-bodyClip)`} opacity={1}>
+          {/* Left shoulder drape */}
+          <path d="M 96 92 C 118 118 126 155 128 198" fill="none" stroke="rgba(0,0,0,0.065)" strokeWidth={1.8} strokeLinecap="round" />
+          <path d="M 76 116 C 100 148 106 188 108 235" fill="none" stroke="rgba(0,0,0,0.055)" strokeWidth={1.5} strokeLinecap="round" />
+          <path d="M 58 140 C 76 168 78 205 80 238" fill="none" stroke="rgba(0,0,0,0.045)" strokeWidth={1.2} strokeLinecap="round" />
+          {/* Left highlight alongside wrinkle */}
+          <path d="M 98 94 C 120 120 128 157 130 200" fill="none" stroke="rgba(255,255,255,0.10)" strokeWidth={1} strokeLinecap="round" />
+
+          {/* Right shoulder drape */}
+          <path d="M 304 92 C 282 118 274 155 272 198" fill="none" stroke="rgba(0,0,0,0.07)" strokeWidth={1.8} strokeLinecap="round" />
+          <path d="M 324 116 C 300 148 294 188 292 235" fill="none" stroke="rgba(0,0,0,0.055)" strokeWidth={1.5} strokeLinecap="round" />
+          <path d="M 342 140 C 324 168 322 205 320 238" fill="none" stroke="rgba(0,0,0,0.045)" strokeWidth={1.2} strokeLinecap="round" />
+
+          {/* Center torso crease (very subtle) */}
+          <path d="M 198 148 C 196 240 195 330 196 440" fill="none" stroke="rgba(0,0,0,0.04)" strokeWidth={1.2} strokeLinecap="round" />
+          <path d="M 202 148 C 204 240 205 330 204 440" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth={1} strokeLinecap="round" />
+
+          {/* Chest tension lines (horizontal slight curves) */}
+          <path d="M 120 200 C 160 196 240 196 280 200" fill="none" stroke="rgba(0,0,0,0.04)" strokeWidth={1} strokeLinecap="round" />
+          <path d="M 118 240 C 158 237 242 237 282 240" fill="none" stroke="rgba(0,0,0,0.035)" strokeWidth={1} strokeLinecap="round" />
+
+          {/* Lower torso drape */}
+          <path d="M 140 310 C 148 340 148 390 146 438" fill="none" stroke="rgba(0,0,0,0.04)" strokeWidth={1.2} strokeLinecap="round" />
+          <path d="M 260 310 C 252 340 252 390 254 438" fill="none" stroke="rgba(0,0,0,0.04)" strokeWidth={1.2} strokeLinecap="round" />
         </g>
-      )}
 
-      {/* ===== FABRIC FOLD LINES (subtle, clipped to body) ===== */}
-      <g clipPath={`url(#${id}-bodyClip)`}>
-        {/* Left shoulder drape lines */}
-        <line x1={100} y1={90} x2={155} y2={190} stroke="rgba(0,0,0,0.06)" strokeWidth={1.5} />
-        <line x1={80}  y1={110} x2={140} y2={220} stroke="rgba(0,0,0,0.055)" strokeWidth={1.5} />
-        <line x1={115} y1={80}  x2={165} y2={165} stroke="rgba(0,0,0,0.045)" strokeWidth={1.5} />
-        {/* Right shoulder drape lines */}
-        <line x1={300} y1={90}  x2={245} y2={190} stroke="rgba(0,0,0,0.06)" strokeWidth={1.5} />
-        <line x1={320} y1={110} x2={260} y2={220} stroke="rgba(0,0,0,0.055)" strokeWidth={1.5} />
-        <line x1={285} y1={80}  x2={235} y2={165} stroke="rgba(0,0,0,0.045)" strokeWidth={1.5} />
-        {/* Center torso crease */}
-        <line x1={198} y1={140} x2={196} y2={380} stroke="rgba(0,0,0,0.04)" strokeWidth={1} />
-        <line x1={202} y1={140} x2={204} y2={380} stroke="rgba(255,255,255,0.06)" strokeWidth={1} />
-      </g>
+        {/* ── Seam lines ── */}
+        <g clipPath={`url(#${id}-bodyClip)`}>
+          {/* Side seams */}
+          <path d={leftSeam}  fill="none" stroke="rgba(0,0,0,0.12)" strokeWidth={1} strokeLinecap="round" />
+          <path d={rightSeam} fill="none" stroke="rgba(0,0,0,0.12)" strokeWidth={1} strokeLinecap="round" />
+          {/* Side seam highlights */}
+          <path d="M 83 242 C 81 310 79 370 81 448" fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth={0.8} />
+          <path d="M 317 242 C 319 310 321 370 319 448" fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth={0.8} />
+          {/* Armhole seam marks */}
+          <path d={leftArmholeLine}  fill="none" stroke="rgba(0,0,0,0.10)" strokeWidth={1} strokeLinecap="round" />
+          <path d={rightArmholeLine} fill="none" stroke="rgba(0,0,0,0.10)" strokeWidth={1} strokeLinecap="round" />
+        </g>
 
-      {/* ===== 3D SHADING LAYERS ===== */}
-      {/* Main top-left-to-bottom-right gradient */}
-      <path d={bodyPath} fill={`url(#${id}-bodyGrad)`} />
-      {/* Center chest radial highlight */}
-      <path d={bodyPath} fill={`url(#${id}-chestHighlight)`} />
-      {/* Left edge shadow */}
-      <path d={bodyPath} fill={`url(#${id}-leftShadow)`} />
-      {/* Right edge shadow */}
-      <path d={bodyPath} fill={`url(#${id}-rightShadow)`} />
-      {/* Bottom vignette */}
-      <path d={bodyPath} fill={`url(#${id}-bottomVignette)`} />
+        {/* ── 3D Shading layers ── */}
+        <path d={bodyPath} fill={`url(#${id}-mainLight)`} />
+        <path d={bodyPath} fill={`url(#${id}-specular)`} />
+        <path d={bodyPath} fill={`url(#${id}-leftEdge)`} />
+        <path d={bodyPath} fill={`url(#${id}-rightEdge)`} />
+        <path d={bodyPath} fill={`url(#${id}-bottomFade)`} />
+        <path d={bodyPath} fill={`url(#${id}-centerFade)`} />
 
-      {/* Left sleeve lighter shading */}
-      <path d={leftSleevePath} fill={`url(#${id}-leftSleeveGrad)`} clipPath={`url(#${id}-bodyClip)`} />
-      {/* Right sleeve darker shading */}
-      <path d={rightSleevePath} fill={`url(#${id}-rightSleeveGrad)`} clipPath={`url(#${id}-bodyClip)`} />
+        {/* Sleeve shading */}
+        <path d={leftSleevePath}  fill={`url(#${id}-leftSlv)`}  clipPath={`url(#${id}-bodyClip)`} />
+        <path d={rightSleevePath} fill={`url(#${id}-rightSlv)`} clipPath={`url(#${id}-bodyClip)`} />
 
-      {/* Armhole shadows */}
-      <path d={leftArmholeShadow}  fill="rgba(0,0,0,0.14)" clipPath={`url(#${id}-bodyClip)`} />
-      <path d={rightArmholeShadow} fill="rgba(0,0,0,0.18)" clipPath={`url(#${id}-bodyClip)`} />
+        {/* Armhole shadow pool */}
+        <ellipse cx={82}  cy={232} rx={22} ry={12} fill="rgba(0,0,0,0.14)" clipPath={`url(#${id}-bodyClip)`} />
+        <ellipse cx={318} cy={232} rx={22} ry={12} fill="rgba(0,0,0,0.18)" clipPath={`url(#${id}-bodyClip)`} />
 
-      {/* ===== CUFF BANDS ===== */}
-      <path d={leftCuffPath}  fill={cc} clipPath={`url(#${id}-bodyClip)`} />
-      <path d={rightCuffPath} fill={cc} clipPath={`url(#${id}-bodyClip)`} />
-      {/* Cuff highlights */}
-      <path d={leftCuffPath}  fill="rgba(255,255,255,0.15)" clipPath={`url(#${id}-bodyClip)`} />
+        {/* Shoulder highlight arcs */}
+        <path d={leftShoulder}  fill="none" stroke="rgba(255,255,255,0.50)" strokeWidth={2.5} strokeLinecap="round" clipPath={`url(#${id}-bodyClip)`} />
+        <path d={rightShoulder} fill="none" stroke="rgba(255,255,255,0.28)" strokeWidth={2.0} strokeLinecap="round" clipPath={`url(#${id}-bodyClip)`} />
 
-      {/* ===== SHOULDER HIGHLIGHT ARCS ===== */}
-      <path
-        d={leftShoulderHighlight}
-        fill="none"
-        stroke="rgba(255,255,255,0.45)"
-        strokeWidth={3}
-        strokeLinecap="round"
-        clipPath={`url(#${id}-bodyClip)`}
-      />
-      <path
-        d={rightShoulderHighlight}
-        fill="none"
-        stroke="rgba(255,255,255,0.30)"
-        strokeWidth={2.5}
-        strokeLinecap="round"
-        clipPath={`url(#${id}-bodyClip)`}
-      />
+        {/* Sleeve top edges */}
+        <path d="M 36 93 L 8 196"   fill="none" stroke="rgba(255,255,255,0.28)" strokeWidth={1.8} strokeLinecap="round" clipPath={`url(#${id}-bodyClip)`} />
+        <path d="M 364 93 L 392 196" fill="none" stroke="rgba(255,255,255,0.10)" strokeWidth={1.4} strokeLinecap="round" clipPath={`url(#${id}-bodyClip)`} />
 
-      {/* Sleeve top-edge highlight lines */}
-      <path
-        d="M 34 94 L 8 192"
-        fill="none"
-        stroke="rgba(255,255,255,0.30)"
-        strokeWidth={2}
-        strokeLinecap="round"
-        clipPath={`url(#${id}-bodyClip)`}
-      />
-      <path
-        d="M 366 94 L 392 192"
-        fill="none"
-        stroke="rgba(255,255,255,0.12)"
-        strokeWidth={1.5}
-        strokeLinecap="round"
-        clipPath={`url(#${id}-bodyClip)`}
-      />
+        {/* Cuff band shading */}
+        <path d={leftCuffPath}  fill="rgba(0,0,0,0.10)" clipPath={`url(#${id}-bodyClip)`} />
+        <path d={rightCuffPath} fill="rgba(0,0,0,0.15)" clipPath={`url(#${id}-bodyClip)`} />
+        <path d={hemPath}       fill="rgba(0,0,0,0.10)" clipPath={`url(#${id}-bodyClip)`} />
 
-      {/* ===== COLLAR ===== */}
-      {/* Collar outer band in collarColor */}
-      <path d={collarOuter} fill={cc} />
-      {/* Collar inner cut revealing primaryColor */}
-      <path d={collarInner} fill={primaryColor} />
-      {/* Collar shadow along inner edge */}
-      <path
-        d={collarInner}
-        fill="none"
-        stroke="rgba(0,0,0,0.30)"
-        strokeWidth={2.5}
-      />
-      {/* Collar white highlight along outer edge */}
-      <path
-        d={collarOuter}
-        fill="none"
-        stroke="rgba(255,255,255,0.50)"
-        strokeWidth={1.5}
-      />
+        {/* ── Collar ── */}
+        <path d={collarOuter} fill={cc} />
+        <path d={collarInner} fill={primaryColor} />
+        {/* Collar shading */}
+        <path d={collarOuter} fill="rgba(0,0,0,0.12)" />
+        <path d={collarInner} fill="rgba(0,0,0,0.00)" />
+        <path d={collarOuter} fill="none" stroke="rgba(255,255,255,0.45)" strokeWidth={1.2} />
+        <path d={collarInner} fill="none" stroke="rgba(0,0,0,0.35)"       strokeWidth={1.8} />
+        {/* Collar highlight top */}
+        <path d="M 162 83 C 175 71 226 71 238 83" fill="none" stroke="rgba(255,255,255,0.40)" strokeWidth={1.5} strokeLinecap="round" />
 
-      {/* ===== BADGE ===== */}
-      <path d={badgePath} fill={secondaryColor} opacity={0.9} />
-      <path d={badgePath} fill="none" stroke="rgba(255,255,255,0.4)" strokeWidth={1} />
+        {/* ── Badge ── */}
+        <path d={badgePath} fill={secondaryColor} opacity={0.88} />
+        <path d={badgePath} fill="none" stroke="rgba(255,255,255,0.38)" strokeWidth={0.8} />
+        {/* Badge shine */}
+        <path d="M 122 172 L 134 172 L 134 183" fill="none" stroke="rgba(255,255,255,0.30)" strokeWidth={0.8} strokeLinecap="round" />
 
-      {/* ===== NUMBER ===== */}
-      {/* Number shadow */}
-      <text
-        x={202}
-        y={333}
-        textAnchor="middle"
-        fontSize={82}
-        fontWeight="900"
-        fontFamily="'Arial Black', Arial, sans-serif"
-        fill="rgba(0,0,0,0.18)"
-        letterSpacing={-2}
-      >
-        {number}
-      </text>
-      {/* Number main */}
-      <text
-        x={200}
-        y={330}
-        textAnchor="middle"
-        fontSize={82}
-        fontWeight="900"
-        fontFamily="'Arial Black', Arial, sans-serif"
-        fill={numColor}
-        letterSpacing={-2}
-      >
-        {number}
-      </text>
-      {/* Number inner highlight */}
-      <text
-        x={199}
-        y={328}
-        textAnchor="middle"
-        fontSize={82}
-        fontWeight="900"
-        fontFamily="'Arial Black', Arial, sans-serif"
-        fill="rgba(255,255,255,0.12)"
-        letterSpacing={-2}
-      >
-        {number}
-      </text>
-
-      {/* ===== TEAM CODE ===== */}
-      {teamCode && (
-        <text
-          x={200}
-          y={365}
-          textAnchor="middle"
-          fontSize={15}
-          fontWeight="700"
-          fontFamily="'Arial', sans-serif"
-          fill={numColor}
-          letterSpacing={6}
-          opacity={0.85}
-        >
-          {teamCode}
+        {/* ── Number ── */}
+        {/* Shadow layer */}
+        <text x={203} y={343} textAnchor="middle" fontSize={80} fontWeight="900"
+          fontFamily="'Arial Black',Arial,sans-serif"
+          fill="rgba(0,0,0,0.20)" letterSpacing={-1}>
+          {number}
         </text>
-      )}
+        {/* Main number */}
+        <text x={200} y={340} textAnchor="middle" fontSize={80} fontWeight="900"
+          fontFamily="'Arial Black',Arial,sans-serif"
+          fill={numColor} letterSpacing={-1}>
+          {number}
+        </text>
+        {/* Number highlight */}
+        <text x={199} y={338} textAnchor="middle" fontSize={80} fontWeight="900"
+          fontFamily="'Arial Black',Arial,sans-serif"
+          fill={lightNum ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.14)'} letterSpacing={-1}>
+          {number}
+        </text>
+
+        {/* ── Team code ── */}
+        {teamCode && (
+          <text x={200} y={376} textAnchor="middle" fontSize={14} fontWeight="700"
+            fontFamily="Arial,sans-serif"
+            fill={numColor} letterSpacing={5} opacity={0.82}>
+            {teamCode}
+          </text>
+        )}
+      </g>
     </svg>
   )
 }
