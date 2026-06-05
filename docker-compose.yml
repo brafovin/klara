@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:7
+    container_name: wm2026_mongodb
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: wm2026secret
+      MONGO_INITDB_DATABASE: wm2026shop
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+  backend:
+    build: ./backend
+    container_name: wm2026_backend
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 5000
+      MONGODB_URI: mongodb://admin:wm2026secret@mongodb:27017/wm2026shop?authSource=admin
+      JWT_SECRET: your-super-secret-jwt-key-change-in-production
+      STRIPE_SECRET_KEY: your-stripe-secret-key
+      PAYPAL_CLIENT_ID: your-paypal-client-id
+      PAYPAL_CLIENT_SECRET: your-paypal-client-secret
+      EMAIL_HOST: smtp.gmail.com
+      EMAIL_PORT: 587
+      EMAIL_USER: your-email@gmail.com
+      EMAIL_PASS: your-email-password
+      FRONTEND_URL: http://localhost:3000
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mongodb
+
+  frontend:
+    build: ./frontend
+    container_name: wm2026_frontend
+    restart: unless-stopped
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:5000/api
+      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: your-stripe-publishable-key
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+volumes:
+  mongodb_data:
