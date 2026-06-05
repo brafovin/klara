@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
 import { productApi, reviewApi } from '@/lib/api'
+import { STATIC_PRODUCTS } from '@/lib/staticProducts'
 import ProductImageGallery from '@/components/products/ProductImageGallery'
 import { useCartStore } from '@/store/cartStore'
 import { useAuthStore } from '@/store/authStore'
@@ -30,14 +31,21 @@ export default function ProductDetailPage() {
     Promise.all([
       productApi.getBySlug(slug),
     ]).then(([productRes]) => {
-      const p = productRes.data.product as Product
+      const p = (productRes.data.product || STATIC_PRODUCTS.find(x => x.slug === slug)) as Product
       setProduct(p)
       const firstVariant = p.variants.find(v => v.stock > 0)
       if (firstVariant) {
         setSelectedSize(firstVariant.size)
         setSelectedColor(firstVariant.color)
       }
-    }).catch(() => {}).finally(() => setLoading(false))
+    }).catch(() => {
+      const p = STATIC_PRODUCTS.find(x => x.slug === slug) || null
+      setProduct(p)
+      if (p) {
+        const firstVariant = p.variants.find(v => v.stock > 0)
+        if (firstVariant) { setSelectedSize(firstVariant.size); setSelectedColor(firstVariant.color) }
+      }
+    }).finally(() => setLoading(false))
 
     reviewApi.getForProduct(slug).then(res => setReviews(res.data.reviews)).catch(() => {})
   }, [slug])

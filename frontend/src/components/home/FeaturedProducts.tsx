@@ -4,6 +4,7 @@ import { productApi } from '@/lib/api'
 import ProductCard from '@/components/products/ProductCard'
 import type { Product } from '@/types'
 import { useUIStore } from '@/store/uiStore'
+import { STATIC_PRODUCTS } from '@/lib/staticProducts'
 
 export default function FeaturedProducts() {
   const [products, setProducts] = useState<Product[]>([])
@@ -12,8 +13,11 @@ export default function FeaturedProducts() {
 
   useEffect(() => {
     productApi.getFeatured()
-      .then(res => setProducts(res.data.products))
-      .catch(() => setProducts([]))
+      .then(res => {
+        const data = res.data.products
+        setProducts(data?.length ? data : STATIC_PRODUCTS.filter(p => p.isFeatured))
+      })
+      .catch(() => setProducts(STATIC_PRODUCTS.filter(p => p.isFeatured)))
       .finally(() => setLoading(false))
   }, [])
 

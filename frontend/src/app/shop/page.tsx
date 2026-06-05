@@ -5,6 +5,7 @@ import { productApi } from '@/lib/api'
 import ProductCard from '@/components/products/ProductCard'
 import type { Product } from '@/types'
 import { useUIStore } from '@/store/uiStore'
+import { STATIC_PRODUCTS, filterProducts, sortProducts } from '@/lib/staticProducts'
 
 const CATEGORIES = [
   { value: '', label: 'Alle Kategorien' },
@@ -78,11 +79,24 @@ function ShopContent() {
 
     productApi.getAll(params)
       .then(res => {
-        setProducts(res.data.products)
-        setTotal(res.data.total)
-        setPages(res.data.pages)
+        const data = res.data.products
+        if (data?.length) {
+          setProducts(data)
+          setTotal(res.data.total)
+          setPages(res.data.pages)
+        } else {
+          throw new Error('no data')
+        }
       })
-      .catch(() => setProducts([]))
+      .catch(() => {
+        const filtered = filterProducts(STATIC_PRODUCTS, { category, team, search, minPrice, maxPrice })
+        const sorted = sortProducts(filtered, sort)
+        const limit = 12
+        const start = (page - 1) * limit
+        setProducts(sorted.slice(start, start + limit))
+        setTotal(filtered.length)
+        setPages(Math.ceil(filtered.length / limit))
+      })
       .finally(() => setLoading(false))
   }, [category, team, search, sort, page, minPrice, maxPrice])
 
