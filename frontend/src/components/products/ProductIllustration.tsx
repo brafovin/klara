@@ -35,6 +35,11 @@ export const TEAM_COLORS: Record<string, TeamColors> = {
   senegal:      { primary: '#00853F', secondary: '#FFFFFF', accent: '#E31B23', stripe: '#E31B23', collar: '#FDEF42', code: 'SEN', flag: '🇸🇳', pattern: 'stripes' },
   australien:   { primary: '#00843D', secondary: '#FFD700', accent: '#00843D', collar: '#FFD700', code: 'AUS', flag: '🇦🇺', pattern: 'solid' },
   suedkorea:    { primary: '#FFFFFF', secondary: '#C60C30', accent: '#003478', collar: '#C60C30', code: 'KOR', flag: '🇰🇷', pattern: 'solid' },
+  belgien:      { primary: '#EF3340', secondary: '#000000', accent: '#FFD700', collar: '#FFD700', code: 'BEL', flag: '🇧🇪', pattern: 'solid' },
+  kanada:       { primary: '#FF0000', secondary: '#FFFFFF', accent: '#FF0000', collar: '#FFFFFF', code: 'CAN', flag: '🇨🇦', pattern: 'solid' },
+  nigeria:      { primary: '#008751', secondary: '#FFFFFF', accent: '#008751', collar: '#FFFFFF', code: 'NGA', flag: '🇳🇬', pattern: 'solid' },
+  tuerkei:      { primary: '#E30A17', secondary: '#FFFFFF', accent: '#E30A17', collar: '#FFFFFF', code: 'TUR', flag: '🇹🇷', pattern: 'solid' },
+  schweiz:      { primary: '#FF0000', secondary: '#FFFFFF', accent: '#FF0000', collar: '#FFFFFF', code: 'SUI', flag: '🇨🇭', pattern: 'solid' },
   neutral:      { primary: '#111827', secondary: '#FCD116', accent: '#22c55e', collar: '#22c55e', code: 'WM', flag: '⚽', pattern: 'solid' },
   other:        { primary: '#6366f1', secondary: '#FFFFFF', accent: '#f59e0b', collar: '#FFFFFF', code: 'FAN', flag: '⚽', pattern: 'solid' },
 }

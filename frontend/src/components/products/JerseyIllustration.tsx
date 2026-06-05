@@ -1,3 +1,6 @@
+'use client'
+import { useMemo } from 'react'
+
 interface Props {
   primaryColor?: string
   secondaryColor?: string
@@ -11,7 +14,7 @@ interface Props {
 
 export default function JerseyIllustration({
   primaryColor = '#FFFFFF',
-  secondaryColor = '#000000',
+  secondaryColor = '#1a1a1a',
   stripeColor,
   collarColor,
   number = '10',
@@ -21,161 +24,202 @@ export default function JerseyIllustration({
 }: Props) {
   const stripe = stripeColor || secondaryColor
   const collar = collarColor || secondaryColor
-  const id = `j-${teamCode || 'x'}-${Math.random().toString(36).slice(2,6)}`
+  const id = useMemo(() => `j${Math.random().toString(36).slice(2,7)}`, [])
+
+  // Darken primary for shadows
+  const isDark = primaryColor === '#FFFFFF' || primaryColor.toLowerCase() === '#fff'
+  const shadowColor = isDark ? '#b0b8c8' : '#000000'
 
   return (
-    <svg viewBox="0 0 400 440" width={size} height={size * 1.1} xmlns="http://www.w3.org/2000/svg" style={{filter:'drop-shadow(0 8px 24px rgba(0,0,0,0.18))'}}>
+    <svg viewBox="0 0 480 520" width={size} height={size * (520/480)} xmlns="http://www.w3.org/2000/svg">
       <defs>
-        {/* Main gradient for 3D effect */}
-        <linearGradient id={`${id}-body`} x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor={secondaryColor} stopOpacity="0.18"/>
-          <stop offset="20%" stopColor={primaryColor} stopOpacity="0"/>
-          <stop offset="80%" stopColor={primaryColor} stopOpacity="0"/>
-          <stop offset="100%" stopColor={secondaryColor} stopOpacity="0.22"/>
+        {/* Body main gradient - light from top-left */}
+        <linearGradient id={`${id}bg`} x1="10%" y1="0%" x2="90%" y2="100%">
+          <stop offset="0%" stopColor="white" stopOpacity={isDark ? "0.08" : "0.22"}/>
+          <stop offset="45%" stopColor={primaryColor} stopOpacity="0"/>
+          <stop offset="100%" stopColor={shadowColor} stopOpacity="0.28"/>
         </linearGradient>
-        <linearGradient id={`${id}-light`} x1="30%" y1="0%" x2="70%" y2="100%">
-          <stop offset="0%" stopColor="white" stopOpacity="0.25"/>
-          <stop offset="100%" stopColor="white" stopOpacity="0"/>
+        {/* Fabric fold - vertical center highlight */}
+        <linearGradient id={`${id}ch`} x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor={shadowColor} stopOpacity="0.12"/>
+          <stop offset="35%" stopColor="white" stopOpacity={isDark ? "0.0" : "0.18"}/>
+          <stop offset="50%" stopColor="white" stopOpacity={isDark ? "0.0" : "0.12"}/>
+          <stop offset="65%" stopColor="white" stopOpacity="0"/>
+          <stop offset="100%" stopColor={shadowColor} stopOpacity="0.18"/>
         </linearGradient>
-        <linearGradient id={`${id}-sleeve-l`} x1="100%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" stopColor={secondaryColor} stopOpacity="0.12"/>
-          <stop offset="100%" stopColor={secondaryColor} stopOpacity="0.35"/>
+        {/* Left sleeve gradient */}
+        <linearGradient id={`${id}sl`} x1="100%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stopColor="white" stopOpacity={isDark ? "0.0" : "0.15"}/>
+          <stop offset="100%" stopColor={shadowColor} stopOpacity="0.4"/>
         </linearGradient>
-        <linearGradient id={`${id}-sleeve-r`} x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor={secondaryColor} stopOpacity="0.12"/>
-          <stop offset="100%" stopColor={secondaryColor} stopOpacity="0.35"/>
+        {/* Right sleeve gradient */}
+        <linearGradient id={`${id}sr`} x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="white" stopOpacity={isDark ? "0.0" : "0.15"}/>
+          <stop offset="100%" stopColor={shadowColor} stopOpacity="0.4"/>
         </linearGradient>
-        <clipPath id={`${id}-body-clip`}>
-          <path d="M128 88 L62 136 L38 215 L82 222 L82 400 L318 400 L318 222 L362 215 L338 136 L272 88 C252 112 228 122 200 122 C172 122 148 112 128 88Z"/>
-        </clipPath>
-        <clipPath id={`${id}-sleeve-l-clip`}>
-          <path d="M128 88 L62 136 L38 215 L82 222 L98 158 C118 140 132 120 128 88Z"/>
-        </clipPath>
-        <clipPath id={`${id}-sleeve-r-clip`}>
-          <path d="M272 88 L338 136 L362 215 L318 222 L302 158 C282 140 268 120 272 88Z"/>
-        </clipPath>
-        <filter id={`${id}-crease`}>
-          <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" result="noise"/>
-          <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.5" xChannelSelector="R" yChannelSelector="G"/>
+        {/* Collar 3D gradient */}
+        <radialGradient id={`${id}col`} cx="50%" cy="20%" r="80%">
+          <stop offset="0%" stopColor="white" stopOpacity="0.3"/>
+          <stop offset="100%" stopColor={shadowColor} stopOpacity="0.5"/>
+        </radialGradient>
+        {/* Drop shadow filter */}
+        <filter id={`${id}ds`} x="-15%" y="-10%" width="130%" height="130%">
+          <feDropShadow dx="0" dy="8" stdDeviation="12" floodColor="#000" floodOpacity="0.25"/>
         </filter>
+        {/* Clip paths */}
+        <clipPath id={`${id}bc`}>
+          <path d="M150 95 Q100 82 60 118 L20 210 L82 232 L82 490 L398 490 L398 232 L460 210 L420 118 Q380 82 330 95 Q310 128 240 136 Q170 128 150 95Z"/>
+        </clipPath>
+        <clipPath id={`${id}slc`}>
+          <path d="M150 95 Q100 82 60 118 L20 210 L82 232 L110 170 Q130 130 150 95Z"/>
+        </clipPath>
+        <clipPath id={`${id}src`}>
+          <path d="M330 95 Q380 82 420 118 L460 210 L398 232 L370 170 Q350 130 330 95Z"/>
+        </clipPath>
       </defs>
 
-      {/* ===== LEFT SLEEVE ===== */}
-      <path d="M128 88 L62 136 L38 215 L82 222 L98 158 C118 140 132 120 128 88Z"
-        fill={secondaryColor} />
-      {pattern === 'stripes' && (
-        <g clipPath={`url(#${id}-sleeve-l-clip)`}>
-          {[0,1,2,3,4].map(i => (
-            <rect key={i} x={20 + i*22} y="80" width="11" height="160" fill={stripe} fillOpacity="0.35" transform="rotate(-30,80,155)"/>
-          ))}
-        </g>
-      )}
-      <rect x="55" y="208" width="35" height="9" rx="4" fill={primaryColor} fillOpacity="0.6"/>
-      <path d="M128 88 L62 136 L38 215 L82 222 L98 158 C118 140 132 120 128 88Z"
-        fill={`url(#${id}-sleeve-l)`}/>
+      <g filter={`url(#${id}ds)`}>
+        {/* ── LEFT SLEEVE ── */}
+        <path d="M150 95 Q100 82 60 118 L20 210 L82 232 L110 170 Q130 130 150 95Z"
+          fill={secondaryColor}/>
+        {pattern === 'stripes' && (
+          <g clipPath={`url(#${id}slc)`}>
+            {[-2,-1,0,1,2,3].map(i=>(
+              <rect key={i} x={-20+i*24} y="70" width="12" height="200" fill={stripe} fillOpacity="0.4"
+                transform="rotate(-35 85 155)"/>
+            ))}
+          </g>
+        )}
+        <path d="M150 95 Q100 82 60 118 L20 210 L82 232 L110 170 Q130 130 150 95Z"
+          fill={`url(#${id}sl)`}/>
+        {/* Sleeve cuff */}
+        <path d="M20 198 L82 218 L82 234 L20 213Z" fill={collar} opacity="0.85"/>
+        <path d="M20 198 L82 218" fill="none" stroke="white" strokeWidth="1.5" strokeOpacity="0.25"/>
 
-      {/* ===== RIGHT SLEEVE ===== */}
-      <path d="M272 88 L338 136 L362 215 L318 222 L302 158 C282 140 268 120 272 88Z"
-        fill={secondaryColor} />
-      {pattern === 'stripes' && (
-        <g clipPath={`url(#${id}-sleeve-r-clip)`}>
-          {[0,1,2,3,4].map(i => (
-            <rect key={i} x={270 + i*22} y="80" width="11" height="160" fill={stripe} fillOpacity="0.35" transform="rotate(30,320,155)"/>
-          ))}
-        </g>
-      )}
-      <rect x="310" y="208" width="35" height="9" rx="4" fill={primaryColor} fillOpacity="0.6"/>
-      <path d="M272 88 L338 136 L362 215 L318 222 L302 158 C282 140 268 120 272 88Z"
-        fill={`url(#${id}-sleeve-r)`}/>
+        {/* ── RIGHT SLEEVE ── */}
+        <path d="M330 95 Q380 82 420 118 L460 210 L398 232 L370 170 Q350 130 330 95Z"
+          fill={secondaryColor}/>
+        {pattern === 'stripes' && (
+          <g clipPath={`url(#${id}src)`}>
+            {[-2,-1,0,1,2,3].map(i=>(
+              <rect key={i} x={350+i*24} y="70" width="12" height="200" fill={stripe} fillOpacity="0.4"
+                transform="rotate(35 395 155)"/>
+            ))}
+          </g>
+        )}
+        <path d="M330 95 Q380 82 420 118 L460 210 L398 232 L370 170 Q350 130 330 95Z"
+          fill={`url(#${id}sr)`}/>
+        {/* Sleeve cuff */}
+        <path d="M460 198 L398 218 L398 234 L460 213Z" fill={collar} opacity="0.85"/>
+        <path d="M460 198 L398 218" fill="none" stroke="white" strokeWidth="1.5" strokeOpacity="0.25"/>
 
-      {/* ===== BODY BASE ===== */}
-      <path d="M128 88 L62 136 L38 215 L82 222 L82 400 L318 400 L318 222 L362 215 L338 136 L272 88 C252 112 228 122 200 122 C172 122 148 112 128 88Z"
-        fill={primaryColor}/>
+        {/* ── BODY ── */}
+        <path d="M150 95 Q100 82 60 118 L20 210 L82 232 L82 490 L398 490 L398 232 L460 210 L420 118 Q380 82 330 95 Q310 128 240 136 Q170 128 150 95Z"
+          fill={primaryColor}/>
 
-      {/* Pattern overlay on body */}
-      {pattern === 'stripes' && (
-        <g clipPath={`url(#${id}-body-clip)`}>
-          {[-2,-1,0,1,2,3,4,5,6,7,8].map(i => (
-            <rect key={i} x={82 + i*22} y="88" width="11" height="320" fill={stripe} fillOpacity="0.28"/>
-          ))}
-        </g>
-      )}
-      {pattern === 'hoops' && (
-        <g clipPath={`url(#${id}-body-clip)`}>
-          {[0,1,2,3,4,5,6,7,8,9].map(i => (
-            <rect key={i} x="82" y={88 + i*32} width="240" height="16" fill={stripe} fillOpacity="0.32"/>
-          ))}
-        </g>
-      )}
-      {pattern === 'diagonal' && (
-        <g clipPath={`url(#${id}-body-clip)`}>
-          {[-4,-3,-2,-1,0,1,2,3,4,5,6].map(i => (
-            <rect key={i} x={50 + i*30} y="80" width="15" height="420" fill={stripe} fillOpacity="0.3" transform="rotate(45,200,250)"/>
-          ))}
-        </g>
-      )}
-      {pattern === 'chevron' && (
-        <g clipPath={`url(#${id}-body-clip)`}>
-          {[0,1,2,3,4,5].map(i => (
-            <path key={i} d={`M82 ${145+i*48} L200 ${115+i*48} L318 ${145+i*48} L318 ${165+i*48} L200 ${135+i*48} L82 ${165+i*48} Z`}
-              fill={stripe} fillOpacity="0.3"/>
-          ))}
-        </g>
-      )}
+        {/* Pattern on body */}
+        {pattern === 'stripes' && (
+          <g clipPath={`url(#${id}bc)`}>
+            {[0,1,2,3,4,5,6,7,8,9,10].map(i=>(
+              <rect key={i} x={62+i*26} y="88" width="13" height="410" fill={stripe} fillOpacity="0.25"/>
+            ))}
+          </g>
+        )}
+        {pattern === 'hoops' && (
+          <g clipPath={`url(#${id}bc)`}>
+            {[0,1,2,3,4,5,6,7,8,9].map(i=>(
+              <rect key={i} x="82" y={95+i*40} width="316" height="20" fill={stripe} fillOpacity="0.35"/>
+            ))}
+          </g>
+        )}
+        {pattern === 'diagonal' && (
+          <g clipPath={`url(#${id}bc)`}>
+            {[-5,-4,-3,-2,-1,0,1,2,3,4,5,6].map(i=>(
+              <rect key={i} x={30+i*38} y="60" width="18" height="560" fill={stripe} fillOpacity="0.28"
+                transform="rotate(40 240 300)"/>
+            ))}
+          </g>
+        )}
+        {pattern === 'chevron' && (
+          <g clipPath={`url(#${id}bc)`}>
+            {[0,1,2,3,4].map(i=>(
+              <path key={i} d={`M82 ${160+i*60} L240 ${128+i*60} L398 ${160+i*60} L398 ${180+i*60} L240 ${148+i*60} L82 ${180+i*60}Z`}
+                fill={stripe} fillOpacity="0.3"/>
+            ))}
+          </g>
+        )}
 
-      {/* 3D shading overlay */}
-      <path d="M128 88 L62 136 L38 215 L82 222 L82 400 L318 400 L318 222 L362 215 L338 136 L272 88 C252 112 228 122 200 122 C172 122 148 112 128 88Z"
-        fill={`url(#${id}-body)`}/>
-      <path d="M128 88 L62 136 L38 215 L82 222 L82 400 L318 400 L318 222 L362 215 L338 136 L272 88 C252 112 228 122 200 122 C172 122 148 112 128 88Z"
-        fill={`url(#${id}-light)`}/>
+        {/* Body shading overlays */}
+        <path d="M150 95 Q100 82 60 118 L20 210 L82 232 L82 490 L398 490 L398 232 L460 210 L420 118 Q380 82 330 95 Q310 128 240 136 Q170 128 150 95Z"
+          fill={`url(#${id}bg)`}/>
+        <path d="M150 95 Q100 82 60 118 L20 210 L82 232 L82 490 L398 490 L398 232 L460 210 L420 118 Q380 82 330 95 Q310 128 240 136 Q170 128 150 95Z"
+          fill={`url(#${id}ch)`}/>
 
-      {/* Side panels */}
-      <path d="M82 222 L82 400 L115 400 L115 230 Z" fill={secondaryColor} fillOpacity="0.15"/>
-      <path d="M318 222 L318 400 L285 400 L285 230 Z" fill={secondaryColor} fillOpacity="0.15"/>
+        {/* Sleeve-to-body shadow */}
+        <path d="M82 232 L82 310 L110 295 L110 175Z" fill={shadowColor} fillOpacity="0.1"/>
+        <path d="M398 232 L398 310 L370 295 L370 175Z" fill={shadowColor} fillOpacity="0.1"/>
 
-      {/* ===== COLLAR ===== */}
-      {/* V-Neck collar */}
-      <path d="M160 96 L200 130 L240 96 L232 82 Q216 68 200 66 Q184 68 168 82 Z"
-        fill={collar} />
-      <path d="M166 97 L200 126 L234 97 L228 86 Q214 74 200 72 Q186 74 172 86 Z"
-        fill={primaryColor} fillOpacity="0.5"/>
-      {/* Collar stitching */}
-      <path d="M168 95 L200 124 L232 95" fill="none" stroke={stripe} strokeWidth="1.5" strokeOpacity="0.5" strokeDasharray="3 2"/>
+        {/* ── COLLAR (round neck, 3D) ── */}
+        {/* Collar outer shape */}
+        <path d="M174 104 Q195 138 240 142 Q285 138 306 104 Q300 88 285 78 Q262 68 240 66 Q218 68 195 78 Q180 88 174 104Z"
+          fill={collar}/>
+        {/* Collar inner – shows body color inside neck */}
+        <path d="M180 107 Q200 136 240 139 Q280 136 300 107 Q294 94 281 85 Q262 76 240 74 Q218 76 199 85 Q186 94 180 107Z"
+          fill={primaryColor}/>
+        {/* Collar 3D shading */}
+        <path d="M174 104 Q195 138 240 142 Q285 138 306 104 Q300 88 285 78 Q262 68 240 66 Q218 68 195 78 Q180 88 174 104Z"
+          fill={`url(#${id}col)`} fillOpacity="0.6"/>
+        {/* Collar rib line */}
+        <path d="M182 106 Q200 133 240 136 Q280 133 298 106"
+          fill="none" stroke="white" strokeWidth="1.5" strokeOpacity="0.3" strokeDasharray="4 3"/>
 
-      {/* Shoulder seam lines */}
-      <line x1="130" y1="90" x2="98" y2="160" stroke={secondaryColor} strokeWidth="1.5" strokeOpacity="0.2"/>
-      <line x1="270" y1="90" x2="302" y2="160" stroke={secondaryColor} strokeWidth="1.5" strokeOpacity="0.2"/>
+        {/* ── SEAM LINES ── */}
+        {/* Shoulder seams */}
+        <path d="M150 95 Q130 130 110 172" fill="none" stroke={shadowColor} strokeWidth="1.5" strokeOpacity="0.2"/>
+        <path d="M330 95 Q350 130 370 172" fill="none" stroke={shadowColor} strokeWidth="1.5" strokeOpacity="0.2"/>
+        {/* Side seams */}
+        <line x1="82" y1="234" x2="82" y2="488" stroke={shadowColor} strokeWidth="1.5" strokeOpacity="0.15"/>
+        <line x1="398" y1="234" x2="398" y2="488" stroke={shadowColor} strokeWidth="1.5" strokeOpacity="0.15"/>
+        {/* Center seam */}
+        <line x1="240" y1="142" x2="240" y2="488" stroke={shadowColor} strokeWidth="1" strokeOpacity="0.08"/>
 
-      {/* Side seam */}
-      <line x1="82" y1="225" x2="82" y2="398" stroke={secondaryColor} strokeWidth="1.5" strokeOpacity="0.2"/>
-      <line x1="318" y1="225" x2="318" y2="398" stroke={secondaryColor} strokeWidth="1.5" strokeOpacity="0.2"/>
+        {/* ── BADGE (WM 2026 shield) ── */}
+        <path d="M170 168 L170 204 Q170 220 185 228 L196 234 L196 162Z" fill={collar} fillOpacity="0.15"/>
+        <path d="M170 162 L196 162 L196 200 Q196 218 183 226 L170 218Z" fill="white" fillOpacity="0.12"/>
+        <path d="M170 162 L196 162 L196 200 Q196 218 183 226 L170 218Z" fill="none" stroke={collar} strokeWidth="1.8" strokeOpacity="0.7"/>
+        <text x="183" y="183" textAnchor="middle" fontSize="8" fontWeight="800" fill={collar} fontFamily="Arial" opacity="0.9">WM</text>
+        <text x="183" y="195" textAnchor="middle" fontSize="9" fontWeight="900" fill={collar} fontFamily="Arial" opacity="0.9">2026</text>
+        <text x="183" y="207" textAnchor="middle" fontSize="7" fontWeight="600" fill={collar} fontFamily="Arial" opacity="0.7">{teamCode}</text>
 
-      {/* ===== BADGE AREA ===== */}
-      <ellipse cx="148" cy="182" rx="22" ry="24" fill="white" fillOpacity="0.18"/>
-      <ellipse cx="148" cy="182" rx="22" ry="24" fill="none" stroke={collar} strokeWidth="1.5" strokeOpacity="0.6"/>
-      <text x="148" y="178" textAnchor="middle" fontSize="9" fontWeight="700" fill={collar} fontFamily="Arial">WM</text>
-      <text x="148" y="191" textAnchor="middle" fontSize="10" fontWeight="900" fill={collar} fontFamily="Arial">2026</text>
-
-      {/* ===== NUMBER ===== */}
-      <text x="200" y="318" textAnchor="middle" fontSize="98" fontWeight="900"
-        fontFamily="Arial Black, Impact, sans-serif"
-        fill={secondaryColor} fillOpacity="0.82"
-        style={{letterSpacing:'-4px'}}>
-        {number}
-      </text>
-
-      {/* ===== TEAM CODE ===== */}
-      {teamCode && (
-        <text x="200" y="368" textAnchor="middle" fontSize="20" fontWeight="700"
-          fontFamily="Arial, sans-serif" fill={secondaryColor} fillOpacity="0.55"
-          letterSpacing="5">
-          {teamCode}
+        {/* ── NUMBER ── */}
+        <text x="240" y="365" textAnchor="middle"
+          fontSize="110" fontWeight="900"
+          fontFamily="'Arial Black',Impact,sans-serif"
+          fill={secondaryColor} fillOpacity="0.88"
+          style={{letterSpacing:'-6px'}}>
+          {number}
         </text>
-      )}
+        {/* Number shadow for depth */}
+        <text x="243" y="368" textAnchor="middle"
+          fontSize="110" fontWeight="900"
+          fontFamily="'Arial Black',Impact,sans-serif"
+          fill={shadowColor} fillOpacity="0.12"
+          style={{letterSpacing:'-6px', zIndex:-1}}>
+          {number}
+        </text>
 
-      {/* Hem */}
-      <line x1="82" y1="392" x2="318" y2="392" stroke={secondaryColor} strokeWidth="2" strokeOpacity="0.15"/>
-      <line x1="82" y1="398" x2="318" y2="398" stroke={secondaryColor} strokeWidth="1" strokeOpacity="0.1"/>
+        {/* ── TEAM NAME BELOW NUMBER ── */}
+        {teamCode && (
+          <text x="240" y="412" textAnchor="middle" fontSize="22" fontWeight="700"
+            fontFamily="Arial,sans-serif" fill={secondaryColor} fillOpacity="0.65" letterSpacing="6">
+            {teamCode}
+          </text>
+        )}
+
+        {/* ── HEM ── */}
+        <line x1="82" y1="482" x2="398" y2="482" stroke={secondaryColor} strokeWidth="2.5" strokeOpacity="0.12"/>
+        <line x1="82" y1="488" x2="398" y2="488" stroke={secondaryColor} strokeWidth="1.5" strokeOpacity="0.08"/>
+      </g>
     </svg>
   )
 }

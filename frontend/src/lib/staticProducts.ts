@@ -465,6 +465,173 @@ export const STATIC_PRODUCTS: Product[] = [
     totalStock: 160, rating: 4.4, numReviews: 27, isFeatured: false,
     material: '100% Polyester', tags: ['australien', 'trikot', 'wm2026'], createdAt: '2026-01-28',
   },
+
+  // ===== BELGIEN =====
+  {
+    _id: '29', name: 'Belgien Trikot 2026 – Rote Teufel',
+    nameTranslations: { en: 'Belgium Jersey 2026 – Red Devils', es: 'Camiseta Bélgica 2026 – Diablos Rojos' },
+    slug: 'belgien-trikot-2026',
+    description: 'Das ikonische rot-schwarz-goldene Trikot der Roten Teufel. Belgien ist bereit für die WM 2026!',
+    descriptionTranslations: { en: 'The iconic red-black-gold jersey of the Red Devils. Belgium is ready for WC 2026!', es: 'La icónica camiseta rojo-negro-dorada de los Diablos Rojos.' },
+    price: 79.99, category: 'trikots', team: 'belgien', images: [],
+    variants: [
+      { size: 'S', color: 'Rot', stock: 45, sku: 'BEL-TRK-S' },
+      { size: 'M', color: 'Rot', stock: 70, sku: 'BEL-TRK-M' },
+      { size: 'L', color: 'Rot', stock: 60, sku: 'BEL-TRK-L' },
+      { size: 'XL', color: 'Rot', stock: 38, sku: 'BEL-TRK-XL' },
+    ],
+    totalStock: 213, rating: 4.6, numReviews: 71, isFeatured: true,
+    material: '100% Polyester', tags: ['belgien', 'trikot', 'wm2026'], createdAt: '2026-01-29',
+  },
+  {
+    _id: '30', name: 'Belgien Fan-Schal',
+    nameTranslations: { en: 'Belgium Fan Scarf', es: 'Bufanda Fan Bélgica' },
+    slug: 'belgien-fan-schal',
+    description: 'Rot-Schwarz-Gold: Der belgische Fan-Schal für alle Roten Teufel.',
+    descriptionTranslations: { en: 'Red-Black-Gold: The Belgian fan scarf for all Red Devils.', es: 'Rojo-Negro-Dorado: La bufanda belga para todos los Diablos Rojos.' },
+    price: 22.99, category: 'schals', team: 'belgien', images: [],
+    variants: [{ size: 'OneSize', color: 'Rot/Schwarz/Gold', stock: 120, sku: 'BEL-SCARF-OS' }],
+    totalStock: 120, rating: 4.4, numReviews: 22, isFeatured: false,
+    material: 'Acryl', tags: ['belgien', 'schal', 'wm2026'], createdAt: '2026-01-30',
+  },
+
+  // ===== KANADA =====
+  {
+    _id: '31', name: 'Kanada Trikot 2026 – Les Rouges',
+    nameTranslations: { en: 'Canada Jersey 2026 – Les Rouges', es: 'Camiseta Canadá 2026 – Les Rouges' },
+    slug: 'kanada-trikot-2026',
+    description: 'Das leuchtend rote Kanada-Trikot – Les Rouges spielen im eigenen Land bei der WM 2026!',
+    descriptionTranslations: { en: 'The vibrant red Canada jersey – Les Rouges play in their own country at WC 2026!', es: '¡La vibrante camiseta roja de Canadá – Les Rouges juegan en su propio país en el CM 2026!' },
+    price: 74.99, category: 'trikots', team: 'kanada', images: [],
+    variants: [
+      { size: 'S', color: 'Rot', stock: 50, sku: 'CAN-TRK-S' },
+      { size: 'M', color: 'Rot', stock: 75, sku: 'CAN-TRK-M' },
+      { size: 'L', color: 'Rot', stock: 65, sku: 'CAN-TRK-L' },
+      { size: 'XL', color: 'Rot', stock: 42, sku: 'CAN-TRK-XL' },
+    ],
+    totalStock: 232, rating: 4.5, numReviews: 48, isFeatured: true,
+    material: '100% Polyester', tags: ['kanada', 'trikot', 'wm2026', 'gastgeber'], createdAt: '2026-02-01',
+  },
+
+  // ===== NIGERIA =====
+  {
+    _id: '32', name: 'Nigeria Trikot 2026 – Super Eagles',
+    nameTranslations: { en: 'Nigeria Jersey 2026 – Super Eagles', es: 'Camiseta Nigeria 2026 – Super Águilas' },
+    slug: 'nigeria-trikot-2026',
+    description: 'Das auffällige grüne Nigeria-Trikot der Super Eagles – eines der beliebtesten Trikots Afrikas.',
+    descriptionTranslations: { en: 'The striking green Nigeria jersey of the Super Eagles – one of the most popular jerseys in Africa.', es: 'La llamativa camiseta verde de Nigeria – una de las más populares de África.' },
+    price: 69.99, category: 'trikots', team: 'nigeria', images: [],
+    variants: [
+      { size: 'S', color: 'Grün', stock: 40, sku: 'NGA-TRK-S' },
+      { size: 'M', color: 'Grün', stock: 65, sku: 'NGA-TRK-M' },
+      { size: 'L', color: 'Grün', stock: 55, sku: 'NGA-TRK-L' },
+      { size: 'XL', color: 'Grün', stock: 35, sku: 'NGA-TRK-XL' },
+    ],
+    totalStock: 195, rating: 4.7, numReviews: 53, isFeatured: false,
+    material: '100% Polyester', tags: ['nigeria', 'trikot', 'wm2026'], createdAt: '2026-02-02',
+  },
+
+  // ===== TÜRKEI =====
+  {
+    _id: '33', name: 'Türkei Trikot 2026',
+    nameTranslations: { en: 'Turkey Jersey 2026', es: 'Camiseta Turquía 2026' },
+    slug: 'tuerkei-trikot-2026',
+    description: 'Das feurige rote Trikot der türkischen Nationalmannschaft – mit dem Halbmond-Detail.',
+    descriptionTranslations: { en: 'The fiery red jersey of the Turkish national team – with the crescent moon detail.', es: 'La ardiente camiseta roja de la selección turca – con el detalle de la media luna.' },
+    price: 69.99, category: 'trikots', team: 'tuerkei', images: [],
+    variants: [
+      { size: 'S', color: 'Rot', stock: 38, sku: 'TUR-TRK-S' },
+      { size: 'M', color: 'Rot', stock: 58, sku: 'TUR-TRK-M' },
+      { size: 'L', color: 'Rot', stock: 50, sku: 'TUR-TRK-L' },
+      { size: 'XL', color: 'Rot', stock: 32, sku: 'TUR-TRK-XL' },
+    ],
+    totalStock: 178, rating: 4.5, numReviews: 41, isFeatured: false,
+    material: '100% Polyester', tags: ['tuerkei', 'trikot', 'wm2026'], createdAt: '2026-02-03',
+  },
+
+  // ===== SCHWEIZ =====
+  {
+    _id: '34', name: 'Schweiz Trikot 2026 – Nati',
+    nameTranslations: { en: 'Switzerland Jersey 2026 – Nati', es: 'Camiseta Suiza 2026 – Nati' },
+    slug: 'schweiz-trikot-2026',
+    description: 'Das klassische rote Schweizer Nati-Trikot – präzise wie ein Schweizer Uhrwerk.',
+    descriptionTranslations: { en: 'The classic red Swiss Nati jersey – precise like a Swiss watch.', es: 'La clásica camiseta roja de la Nati suiza – precisa como un reloj suizo.' },
+    price: 74.99, category: 'trikots', team: 'schweiz', images: [],
+    variants: [
+      { size: 'S', color: 'Rot', stock: 35, sku: 'SUI-TRK-S' },
+      { size: 'M', color: 'Rot', stock: 55, sku: 'SUI-TRK-M' },
+      { size: 'L', color: 'Rot', stock: 48, sku: 'SUI-TRK-L' },
+      { size: 'XL', color: 'Rot', stock: 30, sku: 'SUI-TRK-XL' },
+    ],
+    totalStock: 168, rating: 4.4, numReviews: 36, isFeatured: false,
+    material: '100% Polyester', tags: ['schweiz', 'trikot', 'wm2026'], createdAt: '2026-02-04',
+  },
+
+  // ===== EXTRA KLEIDUNG =====
+  {
+    _id: '35', name: 'WM 2026 Trainingsjacke – Premium',
+    nameTranslations: { en: 'WC 2026 Training Jacket – Premium', es: 'Chaqueta de Entrenamiento CM 2026 – Premium' },
+    slug: 'wm-2026-trainingsjacke-premium',
+    description: 'Exklusive Premium-Trainingsjacke zur WM 2026 mit modernem Design in Schwarz-Gold. Windabweisend, leicht, stylisch.',
+    descriptionTranslations: { en: 'Exclusive premium training jacket for WC 2026 in modern black-gold design. Wind-resistant, lightweight, stylish.', es: 'Chaqueta de entrenamiento premium exclusiva para el CM 2026 en moderno diseño negro-dorado.' },
+    price: 89.99, discountPrice: 74.99, category: 'jacken', team: 'neutral', images: [],
+    variants: [
+      { size: 'S', color: 'Schwarz/Gold', stock: 30, sku: 'WM-JAC-S' },
+      { size: 'M', color: 'Schwarz/Gold', stock: 45, sku: 'WM-JAC-M' },
+      { size: 'L', color: 'Schwarz/Gold', stock: 40, sku: 'WM-JAC-L' },
+      { size: 'XL', color: 'Schwarz/Gold', stock: 25, sku: 'WM-JAC-XL' },
+    ],
+    totalStock: 140, rating: 4.8, numReviews: 19, isFeatured: true, isLimited: true,
+    material: '100% Polyester', tags: ['jacke', 'premium', 'wm2026', 'limited'], saleEndsAt: '2026-07-15', createdAt: '2026-02-05',
+  },
+  {
+    _id: '36', name: 'WM 2026 Fan-Hoodie – Schwarz Edition',
+    nameTranslations: { en: 'WC 2026 Fan Hoodie – Black Edition', es: 'Sudadera Fan CM 2026 – Edición Negra' },
+    slug: 'wm-2026-fan-hoodie-schwarz',
+    description: 'Schwarzer Premium-Hoodie mit WM 2026 Aufdruck in Gold. Für alle Fußballfans die Stil mögen.',
+    descriptionTranslations: { en: 'Black premium hoodie with WC 2026 print in gold. For all football fans who love style.', es: 'Sudadera premium negra con estampado CM 2026 en dorado.' },
+    price: 64.99, category: 'hoodies', team: 'neutral', images: [],
+    variants: [
+      { size: 'S', color: 'Schwarz', stock: 55, sku: 'WM-HOOD-BLK-S' },
+      { size: 'M', color: 'Schwarz', stock: 80, sku: 'WM-HOOD-BLK-M' },
+      { size: 'L', color: 'Schwarz', stock: 70, sku: 'WM-HOOD-BLK-L' },
+      { size: 'XL', color: 'Schwarz', stock: 45, sku: 'WM-HOOD-BLK-XL' },
+    ],
+    totalStock: 250, rating: 4.7, numReviews: 34, isFeatured: true,
+    material: '80% Baumwolle, 20% Polyester', tags: ['hoodie', 'wm2026', 'neutral'], createdAt: '2026-02-06',
+  },
+  {
+    _id: '37', name: 'Deutschland Kinder-Trikot 2026',
+    nameTranslations: { en: 'Germany Kids Jersey 2026', es: 'Camiseta Infantil Alemania 2026' },
+    slug: 'deutschland-kinder-trikot-2026',
+    description: 'Das offizielle Deutschland-Kindertrikot für die kleinen DFB-Fans. In Weiß mit schwarzen Akzenten.',
+    descriptionTranslations: { en: 'The official Germany children\'s jersey for the little DFB fans.', es: 'La camiseta infantil oficial de Alemania para los pequeños fans del DFB.' },
+    price: 39.99, category: 'kinder', team: 'deutschland', images: [],
+    variants: [
+      { size: '128', color: 'Weiß', stock: 50, sku: 'DEU-KID-128' },
+      { size: '140', color: 'Weiß', stock: 65, sku: 'DEU-KID-140' },
+      { size: '152', color: 'Weiß', stock: 55, sku: 'DEU-KID-152' },
+      { size: '164', color: 'Weiß', stock: 40, sku: 'DEU-KID-164' },
+    ],
+    totalStock: 210, rating: 4.8, numReviews: 62, isFeatured: false,
+    material: '100% Polyester', tags: ['deutschland', 'kinder', 'trikot', 'wm2026'], createdAt: '2026-02-07',
+  },
+  {
+    _id: '38', name: 'Brasilien Kinder-Trikot 2026',
+    nameTranslations: { en: 'Brazil Kids Jersey 2026', es: 'Camiseta Infantil Brasil 2026' },
+    slug: 'brasilien-kinder-trikot-2026',
+    description: 'Das goldgelbe Brasilien-Kindertrikot – damit träumen die Kleinen schon vom WM-Titel!',
+    descriptionTranslations: { en: 'The golden-yellow Brazil children\'s jersey – so the little ones can already dream of the WC title!', es: '¡La camiseta infantil amarillo-dorada de Brasil – para que los pequeños ya sueñen con el título mundial!' },
+    price: 39.99, category: 'kinder', team: 'brasilien', images: [],
+    variants: [
+      { size: '128', color: 'Gelb', stock: 60, sku: 'BRA-KID-128' },
+      { size: '140', color: 'Gelb', stock: 75, sku: 'BRA-KID-140' },
+      { size: '152', color: 'Gelb', stock: 65, sku: 'BRA-KID-152' },
+      { size: '164', color: 'Gelb', stock: 48, sku: 'BRA-KID-164' },
+    ],
+    totalStock: 248, rating: 4.7, numReviews: 44, isFeatured: false,
+    material: '100% Polyester', tags: ['brasilien', 'kinder', 'trikot', 'wm2026'], createdAt: '2026-02-08',
+  },
 ]
 
 export function filterProducts(products: Product[], params: {

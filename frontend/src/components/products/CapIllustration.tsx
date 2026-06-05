@@ -1,3 +1,6 @@
+'use client'
+import { useMemo } from 'react'
+
 interface Props {
   primaryColor?: string
   accentColor?: string
@@ -6,74 +9,112 @@ interface Props {
 }
 
 export default function CapIllustration({ primaryColor = '#DC2626', accentColor = '#fbbf24', textColor, size = 400 }: Props) {
-  const id = `cap-${Math.random().toString(36).slice(2,6)}`
-  const txt = textColor || (primaryColor === '#FFFFFF' || primaryColor === '#fff' ? '#111827' : 'white')
+  const id = useMemo(() => `c${Math.random().toString(36).slice(2,7)}`, [])
+  const isLight = primaryColor === '#FFFFFF' || primaryColor === '#fff' || primaryColor === '#FCD116' || primaryColor === '#FFD700'
+  const txt = textColor || (isLight ? '#1a1a1a' : 'white')
+  const shadowC = isLight ? '#8899aa' : '#000'
 
   return (
-    <svg viewBox="0 0 400 320" width={size} height={size * 0.8} xmlns="http://www.w3.org/2000/svg" style={{filter:'drop-shadow(0 8px 24px rgba(0,0,0,0.2))'}}>
+    <svg viewBox="0 0 480 400" width={size} height={size*(400/480)} xmlns="http://www.w3.org/2000/svg">
       <defs>
-        <linearGradient id={`${id}-crown`} x1="20%" y1="0%" x2="80%" y2="100%">
-          <stop offset="0%" stopColor="white" stopOpacity="0.2"/>
-          <stop offset="100%" stopColor="black" stopOpacity="0.15"/>
+        <linearGradient id={`${id}crown`} x1="20%" y1="0%" x2="80%" y2="100%">
+          <stop offset="0%" stopColor="white" stopOpacity={isLight?"0.0":"0.28"}/>
+          <stop offset="60%" stopColor="white" stopOpacity="0"/>
+          <stop offset="100%" stopColor={shadowC} stopOpacity="0.25"/>
         </linearGradient>
-        <linearGradient id={`${id}-brim`} x1="0%" y1="0%" x2="0%" y2="100%">
+        <linearGradient id={`${id}left`} x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor={shadowC} stopOpacity="0.22"/>
+          <stop offset="100%" stopColor={shadowC} stopOpacity="0"/>
+        </linearGradient>
+        <linearGradient id={`${id}right`} x1="100%" y1="0%" x2="0%" y2="0%">
+          <stop offset="0%" stopColor={shadowC} stopOpacity="0.22"/>
+          <stop offset="100%" stopColor={shadowC} stopOpacity="0"/>
+        </linearGradient>
+        <linearGradient id={`${id}brim`} x1="0%" y1="0%" x2="0%" y2="100%">
           <stop offset="0%" stopColor={primaryColor}/>
-          <stop offset="100%" stopColor={primaryColor} stopOpacity="0.7"/>
+          <stop offset="80%" stopColor={primaryColor} stopOpacity="0.85"/>
+          <stop offset="100%" stopColor={shadowC} stopOpacity="0.4"/>
         </linearGradient>
-        <radialGradient id={`${id}-brim-under`} cx="50%" cy="30%">
-          <stop offset="0%" stopColor="black" stopOpacity="0.25"/>
-          <stop offset="100%" stopColor="black" stopOpacity="0.06"/>
-        </radialGradient>
+        <linearGradient id={`${id}bunder`} x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stopColor={shadowC} stopOpacity="0.45"/>
+          <stop offset="100%" stopColor={shadowC} stopOpacity="0.08"/>
+        </linearGradient>
+        <filter id={`${id}ds`} x="-20%" y="-15%" width="140%" height="140%">
+          <feDropShadow dx="0" dy="10" stdDeviation="16" floodColor="#000" floodOpacity="0.25"/>
+        </filter>
       </defs>
 
-      {/* Crown panels */}
-      <path d="M96 218 Q100 130 200 96 Q300 130 304 218Z" fill={primaryColor}/>
+      <g filter={`url(#${id}ds)`}>
+        {/* ── CROWN ── */}
+        {/* Main crown shape (slightly angled perspective) */}
+        <path d="M104 270 Q108 158 240 118 Q372 158 376 270Z" fill={primaryColor}/>
 
-      {/* Panel seam lines */}
-      {[0,60,120,180,240,300].map((deg, i) => {
-        const rad = (deg - 90) * Math.PI / 180
-        const ex = 200 + 108 * Math.cos(rad)
-        const ey = 218 - 116 * Math.sin(rad) * 0.82
-        return <line key={i} x1="200" y1="102" x2={ex} y2={ey} stroke={accentColor} strokeWidth="1.2" strokeOpacity="0.3"/>
-      })}
+        {/* Panel seam lines (6 panels) */}
+        {[0,60,120,180,240,300].map((deg,i)=>{
+          const rad = (deg-90)*Math.PI/180
+          const ex = 240 + 137*Math.cos(rad)
+          const ey = 268 - 148*Math.sin(rad)*0.75
+          return <line key={i} x1="240" y1="126" x2={ex} y2={ey}
+            stroke={accentColor} strokeWidth="1.5" strokeOpacity="0.28" strokeDasharray="5 4"/>
+        })}
 
-      {/* Crown gradient */}
-      <path d="M96 218 Q100 130 200 96 Q300 130 304 218Z" fill={`url(#${id}-crown)`}/>
+        {/* Crown gradient overlays */}
+        <path d="M104 270 Q108 158 240 118 Q372 158 376 270Z" fill={`url(#${id}crown)`}/>
+        <path d="M104 270 Q108 158 170 130 L170 270Z" fill={`url(#${id}left)`}/>
+        <path d="M376 270 Q372 158 310 130 L310 270Z" fill={`url(#${id}right)`}/>
 
-      {/* Sweatband */}
-      <path d="M96 218 Q100 228 200 232 Q300 228 304 218 Q300 212 200 216 Q100 212 96 218Z"
-        fill={accentColor} fillOpacity="0.55"/>
+        {/* Sweatband strip */}
+        <path d="M104 270 Q112 284 240 290 Q368 284 376 270 Q368 260 240 264 Q112 260 104 270Z"
+          fill={accentColor} fillOpacity="0.6"/>
+        <path d="M104 270 Q112 282 240 288 Q368 282 376 270"
+          fill="none" stroke="white" strokeWidth="1.5" strokeOpacity="0.3"/>
+        {/* Sweatband perforations */}
+        {[0,1,2,3,4,5,6,7,8].map(i=>(
+          <ellipse key={i} cx={140+i*28} cy="277" rx="4" ry="3" fill={primaryColor} fillOpacity="0.4"/>
+        ))}
 
-      {/* Brim */}
-      <path d="M58 226 Q60 250 200 256 Q340 250 342 226 Q318 234 200 236 Q82 234 58 226Z"
-        fill={`url(#${id}-brim)`} stroke={accentColor} strokeWidth="1" strokeOpacity="0.4"/>
-      {/* Brim underside */}
-      <path d="M58 226 Q60 250 200 256 Q340 250 342 226 Q318 234 200 236 Q82 234 58 226Z"
-        fill={`url(#${id}-brim-under)`}/>
-      {/* Brim edge */}
-      <path d="M58 226 Q60 252 200 258 Q340 252 342 226" fill="none" stroke={accentColor} strokeWidth="2" strokeOpacity="0.4"/>
+        {/* ── BRIM (perspective view) ── */}
+        {/* Brim underside (darker, visible from slightly above) */}
+        <path d="M70 278 Q72 310 240 318 Q408 310 410 278 Q380 290 240 294 Q100 290 70 278Z"
+          fill={`url(#${id}bunder)`}/>
+        {/* Brim top surface */}
+        <path d="M70 278 Q72 308 240 316 Q408 308 410 278 Q380 286 240 290 Q100 286 70 278Z"
+          fill={`url(#${id}brim)`}/>
+        {/* Brim edge */}
+        <path d="M70 278 Q72 312 240 320 Q408 312 410 278"
+          fill="none" stroke={accentColor} strokeWidth="2" strokeOpacity="0.45"/>
+        {/* Brim stitching lines */}
+        <path d="M84 283 Q86 308 240 315 Q394 308 396 283"
+          fill="none" stroke={accentColor} strokeWidth="1.2" strokeOpacity="0.4" strokeDasharray="4 3"/>
+        <path d="M98 286 Q100 308 240 314 Q380 308 382 286"
+          fill="none" stroke={accentColor} strokeWidth="0.8" strokeOpacity="0.3" strokeDasharray="4 3"/>
 
-      {/* Brim stitching */}
-      <path d="M72 233 Q74 250 200 255 Q326 250 328 233" fill="none" stroke={accentColor} strokeWidth="1" strokeOpacity="0.35" strokeDasharray="4 3"/>
-      <path d="M82 236 Q84 250 200 254 Q316 250 318 236" fill="none" stroke={accentColor} strokeWidth="0.8" strokeOpacity="0.25" strokeDasharray="4 3"/>
+        {/* ── TOP BUTTON ── */}
+        <circle cx="240" cy="122" r="14" fill={accentColor} fillOpacity="0.95"/>
+        <circle cx="240" cy="122" r="9" fill={primaryColor} fillOpacity="0.6"/>
+        <circle cx="240" cy="122" r="4" fill={accentColor} fillOpacity="0.8"/>
+        {/* Button thread holes */}
+        <line x1="236" y1="122" x2="244" y2="122" stroke="white" strokeWidth="1.5" strokeOpacity="0.5"/>
+        <line x1="240" y1="118" x2="240" y2="126" stroke="white" strokeWidth="1.5" strokeOpacity="0.5"/>
 
-      {/* Button on top */}
-      <circle cx="200" cy="100" r="11" fill={accentColor} fillOpacity="0.9"/>
-      <circle cx="200" cy="100" r="7" fill={primaryColor} fillOpacity="0.5"/>
+        {/* ── FRONT EMBLEM ── */}
+        <path d="M240 208 L256 230 L278 226 L270 248 L284 264 L262 262 L252 284 L240 264 L228 284 L218 262 L196 264 L210 248 L202 226 L224 230Z"
+          fill={accentColor} fillOpacity="0.85"/>
+        <path d="M240 218 L252 236 L270 232 L264 250 L274 263 L256 261 L248 279 L240 261 L232 279 L224 261 L206 263 L216 250 L210 232 L228 236Z"
+          fill="white" fillOpacity="0.2"/>
+        <text x="240" y="250" textAnchor="middle" fontSize="20" fontWeight="900"
+          fontFamily="'Arial Black',sans-serif" fill={txt} opacity="0.95">WM</text>
 
-      {/* Front emblem */}
-      <ellipse cx="200" cy="176" rx="34" ry="36" fill="white" fillOpacity="0.15"/>
-      <ellipse cx="200" cy="176" rx="34" ry="36" fill="none" stroke={accentColor} strokeWidth="1.8" strokeOpacity="0.6"/>
-      <text x="200" y="170" textAnchor="middle" fontSize="13" fontWeight="800" fill={txt} fontFamily="Arial Black">WM</text>
-      <text x="200" y="187" textAnchor="middle" fontSize="15" fontWeight="900" fill={txt} fontFamily="Arial Black">2026</text>
-
-      {/* Adjustable strap */}
-      <rect x="165" y="230" width="70" height="18" rx="5" fill={accentColor} fillOpacity="0.55"/>
-      <rect x="193" y="226" width="14" height="26" rx="3" fill={accentColor} fillOpacity="0.75"/>
-      {/* Strap holes */}
-      {[-2,-1,0,1,2].map(i => (
-        <circle key={i} cx={200 + i * 6} cy="239" r="1.5" fill={primaryColor} fillOpacity="0.7"/>
-      ))}
+        {/* ── ADJUSTABLE BACK STRAP ── */}
+        <rect x="190" y="284" width="100" height="22" rx="6" fill={accentColor} fillOpacity="0.55"/>
+        <rect x="230" y="280" width="20" height="30" rx="4" fill={accentColor} fillOpacity="0.8"/>
+        {/* Buckle */}
+        <rect x="234" y="284" width="12" height="22" rx="2" fill="white" fillOpacity="0.3"/>
+        {/* Strap holes */}
+        {[-2,-1,0,1,2].map(i=>(
+          <circle key={i} cx={240+i*8} cy="295" r="2.5" fill={primaryColor} fillOpacity="0.7"/>
+        ))}
+      </g>
     </svg>
   )
 }

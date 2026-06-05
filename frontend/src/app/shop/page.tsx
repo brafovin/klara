@@ -38,6 +38,11 @@ const TEAMS = [
   { value: 'senegal', label: '🇸🇳 Senegal' },
   { value: 'suedkorea', label: '🇰🇷 Südkorea' },
   { value: 'australien', label: '🇦🇺 Australien' },
+  { value: 'belgien', label: '🇧🇪 Belgien' },
+  { value: 'kanada', label: '🇨🇦 Kanada' },
+  { value: 'nigeria', label: '🇳🇬 Nigeria' },
+  { value: 'tuerkei', label: '🇹🇷 Türkei' },
+  { value: 'schweiz', label: '🇨🇭 Schweiz' },
 ]
 
 const SORTS = [
