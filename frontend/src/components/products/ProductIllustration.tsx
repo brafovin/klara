@@ -13,12 +13,12 @@ interface TeamColors {
   collar?: string
   code: string
   flag: string
-  pattern?: 'solid' | 'stripes' | 'diagonal' | 'hoops' | 'chevron'
+  pattern?: 'solid' | 'stripes' | 'diagonal' | 'hoops' | 'chevron' | 'yoke'
   scarfColor3?: string
 }
 
 export const TEAM_COLORS: Record<string, TeamColors> = {
-  deutschland:  { primary: '#FFFFFF', secondary: '#000000', accent: '#DD0000', collar: '#000000', code: 'GER', flag: '🇩🇪', pattern: 'solid' },
+  deutschland:  { primary: '#FFFFFF', secondary: '#000000', accent: '#DD0000', collar: '#000000', code: 'GER', flag: '🇩🇪', pattern: 'yoke' },
   brasilien:    { primary: '#FCD116', secondary: '#009B3A', accent: '#002776', collar: '#002776', code: 'BRA', flag: '🇧🇷', pattern: 'solid' },
   argentinien:  { primary: '#74ACDF', secondary: '#FFFFFF', accent: '#74ACDF', stripe: '#74ACDF', collar: '#FFFFFF', code: 'ARG', flag: '🇦🇷', pattern: 'hoops' },
   frankreich:   { primary: '#002395', secondary: '#FFFFFF', accent: '#ED2939', collar: '#ED2939', code: 'FRA', flag: '🇫🇷', pattern: 'solid' },
@@ -66,6 +66,7 @@ export default function ProductIllustration({ category = 'tshirts', team = 'neut
             primaryColor={colors.primary}
             secondaryColor={colors.secondary}
             stripeColor={colors.stripe}
+            accentColor={colors.accent}
             collarColor={colors.collar}
             number="10"
             teamCode={colors.code}
@@ -87,6 +88,7 @@ export default function ProductIllustration({ category = 'tshirts', team = 'neut
             primaryColor={colors.primary}
             secondaryColor={colors.secondary}
             stripeColor={colors.stripe}
+            accentColor={colors.accent}
             collarColor={colors.collar}
             number="7"
             teamCode="KID"
