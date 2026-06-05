@@ -49,6 +49,10 @@ body {
 ::-webkit-scrollbar-track { @apply bg-gray-100 dark:bg-gray-900; }
 ::-webkit-scrollbar-thumb { @apply bg-gray-400 dark:bg-gray-600 rounded-full; }
 
+/* Hide scrollbar for category pills */
+.scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
+.scrollbar-none::-webkit-scrollbar { display: none; }
+
 /* Star rating */
 .star-filled { color: #fbbf24; }
 .star-empty { color: #d1d5db; }

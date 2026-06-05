@@ -155,99 +155,146 @@ function ShopContent() {
   )
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
-      {/* Header */}
-      <div className="mb-8">
-        <h1 className="section-title mb-2">
-          {language === 'de' ? 'Shop' : language === 'en' ? 'Shop' : 'Tienda'}
-          {search && <span className="text-primary-600 text-2xl ml-3">„{search}"</span>}
-        </h1>
-        <p className="text-gray-500 dark:text-gray-400">{total} Produkte gefunden</p>
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
+      {/* ── Hero Banner ── */}
+      <div className="bg-gradient-to-br from-primary-700 via-primary-600 to-emerald-600 text-white">
+        <div className="max-w-7xl mx-auto px-4 py-10 md:py-14">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+            <div>
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-2xl">⚽</span>
+                <span className="text-sm font-semibold uppercase tracking-widest text-primary-200">WM 2026 Fan Shop</span>
+              </div>
+              <h1 className="text-3xl md:text-5xl font-black leading-tight mb-2">
+                {search ? (
+                  <>Ergebnisse für <span className="text-yellow-300">„{search}"</span></>
+                ) : category ? (
+                  <span className="capitalize">{category}</span>
+                ) : team ? (
+                  <span className="capitalize">{team}</span>
+                ) : (
+                  'Alle Produkte'
+                )}
+              </h1>
+              <p className="text-primary-100 text-sm">
+                {total > 0 ? `${total} Artikel verfügbar` : 'Lade Produkte…'}
+              </p>
+            </div>
+            <div className="flex gap-3 flex-wrap justify-center">
+              {['🇩🇪','🇧🇷','🇦🇷','🇫🇷','🇪🇸'].map((flag, i) => (
+                <span key={i} className="text-3xl md:text-4xl drop-shadow-lg">{flag}</span>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div className="flex gap-6">
-        {/* Sidebar – desktop */}
-        <aside className="hidden lg:block w-56 flex-shrink-0">
-          <div className="card p-5 sticky top-24">
-            <FilterPanel />
+      {/* ── Category pills (horizontal scroll) ── */}
+      <div className="border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 sticky top-16 z-30 shadow-sm">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="flex gap-2 overflow-x-auto py-3 scrollbar-none">
+            {CATEGORIES.map(c => (
+              <button key={c.value} onClick={() => setParam('category', c.value)}
+                className={`flex-none px-4 py-1.5 rounded-full text-sm font-semibold whitespace-nowrap transition-all ${
+                  category === c.value
+                    ? 'bg-primary-600 text-white shadow-md'
+                    : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                }`}>
+                {c.label}
+              </button>
+            ))}
           </div>
-        </aside>
+        </div>
+      </div>
 
-        <div className="flex-1 min-w-0">
-          {/* Toolbar */}
-          <div className="flex items-center justify-between gap-4 mb-6">
-            <button onClick={() => setIsFilterOpen(!isFilterOpen)}
-              className="lg:hidden flex items-center gap-2 px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-xl text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
-              🔧 Filter
-            </button>
-
-            <div className="flex items-center gap-2 ml-auto">
-              <span className="text-sm text-gray-500 hidden sm:block">Sortieren:</span>
-              <select value={sort} onChange={e => setParam('sort', e.target.value)}
-                className="input-field py-2 text-sm w-auto">
-                {SORTS.map(s => <option key={s.value} value={s.value}>{s.label}</option>)}
-              </select>
-            </div>
-          </div>
-
-          {/* Mobile filter */}
-          {isFilterOpen && (
-            <div className="lg:hidden card p-5 mb-6">
+      <div className="max-w-7xl mx-auto px-4 py-8">
+        <div className="flex gap-6 items-start">
+          {/* ── Sidebar – desktop ── */}
+          <aside className="hidden lg:block w-60 flex-shrink-0">
+            <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 p-5 sticky top-36">
               <FilterPanel />
             </div>
-          )}
+          </aside>
 
-          {/* Active filters */}
-          {(category || team || search) && (
-            <div className="flex flex-wrap gap-2 mb-4">
-              {category && (
-                <span className="badge bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 gap-1">
-                  {category}
-                  <button onClick={() => setParam('category', '')} className="ml-1 hover:text-red-500">✕</button>
-                </span>
-              )}
-              {team && (
-                <span className="badge bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 gap-1">
-                  {team}
-                  <button onClick={() => setParam('team', '')} className="ml-1 hover:text-red-500">✕</button>
-                </span>
-              )}
-            </div>
-          )}
-
-          {/* Products grid */}
-          {loading ? (
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              {Array.from({ length: 12 }).map((_, i) => (
-                <div key={i} className="card aspect-[3/4] animate-pulse bg-gray-100 dark:bg-gray-800" />
-              ))}
-            </div>
-          ) : products.length === 0 ? (
-            <div className="text-center py-24 card">
-              <div className="text-6xl mb-4">😔</div>
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Keine Produkte gefunden</h3>
-              <p className="text-gray-500 dark:text-gray-400 mb-6">Versuche andere Filter oder Suchbegriffe</p>
-              <button onClick={() => router.push('/shop')} className="btn-primary">Filter zurücksetzen</button>
-            </div>
-          ) : (
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-5">
-              {products.map(p => (
-                <ProductCard key={p._id} product={p} lang={language} />
-              ))}
-            </div>
-          )}
-
-          {/* Pagination */}
-          {pages > 1 && (
-            <div className="flex justify-center gap-2 mt-10">
-              {Array.from({ length: pages }, (_, i) => i + 1).map(p => (
-                <button key={p} onClick={() => setParam('page', String(p))}
-                  className={`w-10 h-10 rounded-xl font-medium text-sm transition-colors ${p === page ? 'bg-primary-600 text-white shadow-md' : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700'}`}>
-                  {p}
+          <div className="flex-1 min-w-0">
+            {/* Toolbar */}
+            <div className="flex items-center justify-between gap-4 mb-5">
+              <div className="flex items-center gap-2">
+                <button onClick={() => setIsFilterOpen(!isFilterOpen)}
+                  className="lg:hidden flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl text-sm font-semibold text-gray-700 dark:text-gray-300 shadow-sm hover:shadow-md transition-all">
+                  ⚙️ Filter
                 </button>
-              ))}
+                {/* Active filter chips */}
+                {team && (
+                  <span className="flex items-center gap-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs font-semibold px-3 py-1.5 rounded-full">
+                    {team}
+                    <button onClick={() => setParam('team', '')} className="ml-0.5 hover:text-red-500 leading-none">✕</button>
+                  </span>
+                )}
+              </div>
+
+              <div className="flex items-center gap-2">
+                <span className="text-xs text-gray-400 hidden sm:block">{total} Artikel</span>
+                <select value={sort} onChange={e => setParam('sort', e.target.value)}
+                  className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500">
+                  {SORTS.map(s => <option key={s.value} value={s.value}>{s.label}</option>)}
+                </select>
+              </div>
             </div>
-          )}
+
+            {/* Mobile filter panel */}
+            {isFilterOpen && (
+              <div className="lg:hidden bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm p-5 mb-6">
+                <FilterPanel />
+              </div>
+            )}
+
+            {/* Products grid */}
+            {loading ? (
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-5">
+                {Array.from({ length: 12 }).map((_, i) => (
+                  <div key={i} className="bg-white dark:bg-gray-900 rounded-2xl overflow-hidden border border-gray-100 dark:border-gray-800 shadow-sm">
+                    <div className="aspect-[4/5] bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700 animate-pulse" />
+                    <div className="p-4 space-y-2">
+                      <div className="h-2.5 bg-gray-200 dark:bg-gray-700 rounded-full animate-pulse w-1/3" />
+                      <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded-full animate-pulse w-4/5" />
+                      <div className="h-3 bg-gray-100 dark:bg-gray-800 rounded-full animate-pulse w-1/2" />
+                      <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded-full animate-pulse w-1/3 mt-2" />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : products.length === 0 ? (
+              <div className="text-center py-24 bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800">
+                <div className="text-6xl mb-4">😔</div>
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Keine Produkte gefunden</h3>
+                <p className="text-gray-500 mb-6">Versuche andere Filter</p>
+                <button onClick={() => router.push('/shop')} className="btn-primary">Filter zurücksetzen</button>
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-5">
+                {products.map(p => (
+                  <ProductCard key={p._id} product={p} lang={language} />
+                ))}
+              </div>
+            )}
+
+            {/* Pagination */}
+            {pages > 1 && (
+              <div className="flex justify-center gap-2 mt-10">
+                {Array.from({ length: pages }, (_, i) => i + 1).map(p => (
+                  <button key={p} onClick={() => setParam('page', String(p))}
+                    className={`w-10 h-10 rounded-xl font-semibold text-sm transition-all shadow-sm ${
+                      p === page
+                        ? 'bg-primary-600 text-white shadow-md'
+                        : 'bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 border border-gray-200 dark:border-gray-700'
+                    }`}>
+                    {p}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>
