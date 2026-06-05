@@ -70,12 +70,12 @@ export default function ProductCard({ product, lang = 'de' }: Props) {
         }}
       >
         {useIllustration ? (
-          <div className="w-full h-full flex items-center justify-center p-2">
+          <div className="w-full h-full flex items-center justify-center p-6 pb-4">
             <ProductIllustration
               category={product.category}
               team={product.team}
-              size={260}
-              className="w-full h-full"
+              size={180}
+              className="drop-shadow-xl"
             />
           </div>
         ) : (
