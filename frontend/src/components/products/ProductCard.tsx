@@ -66,7 +66,7 @@ export default function ProductCard({ product, lang = 'de' }: Props) {
         className="relative overflow-hidden"
         style={{
           aspectRatio: '4/5',
-          background: `linear-gradient(135deg, ${colors.primary}22 0%, ${colors.secondary}18 50%, ${colors.accent}14 100%)`,
+          background: `linear-gradient(155deg, ${colors.primary}55 0%, ${colors.primary}28 40%, ${colors.accent}22 100%)`,
         }}
       >
         {useIllustration ? (
